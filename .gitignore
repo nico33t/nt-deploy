@@ -1,0 +1,21 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*~
+
+# Backup files (created by sed)
+*.bak
+
+# Local test stuff
+/test/
+/playground/
+node_modules/
+
+# Claude Code local settings (path personali, non condividere)
+.claude/settings.local.json
