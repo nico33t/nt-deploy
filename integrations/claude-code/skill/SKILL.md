@@ -30,12 +30,19 @@ from — either propose sensible defaults and write them into `DESIGN.md`, or fe
 brand template with `nt-design add <brand>` (e.g. stripe, linear, notion). Always fill
 `DESIGN.md` first, then build against it; never invent values silently.
 
-## Other commands
-- Preview: `nt-serve <dir>` · Live editor (edit in browser + auto-reload): `nt-edit <dir>` · Deploy: `nt-push <dir> <client>` · All-in-one: `nt-ship <client>`
-- Rollback: `nt-rollback <client>` · Snapshots: `nt-snapshots <client>`
-- Audit (PageSpeed): `nt-audit <url|client>` · Images→WebP: `nt-images <dir>`
-- Brand template: `nt-design add <brand>` · GUI: `nt-gui` · Diagnostics: `nt-doctor`
-- Target a project: append `-p <project>`. Full list: `nt-help`.
+Scaffold flags: `--plain` / `--vite`, `--serve` / `--no-serve`, `--design=<brand>` (start the
+DESIGN.md from a brand template, e.g. `--design=stripe`).
+
+## All commands
+**Deploy** — `nt-push <dir> <client>` · `nt-ship <client>` (build+deploy+QR+open) · `nt-bp <client>` (build+push)
+**Time Machine** — `nt-rollback <client> [ts]` · `nt-snapshots <client>`
+**Manage** — `nt-list` · `nt-clients` · `nt-projects` · `nt-rm <client>` · `nt-rmproject <name>` · `nt-logs <client>` · `nt-open <client>` · `nt-copy <client>`
+**Quality & traffic** — `nt-audit <url|client> [mobile|desktop]` · `nt-analytics inject|open` · `nt-stats`
+**Scaffold** — `nt-create <client> [--plain|--vite] [--serve] [--design=<brand>]` · `nt-design list|add <brand>` · `nt-new <name>` · `nt-card <url|client>` (beta)
+**Dev server** — `nt-serve <dir> [port]` (auto-opens browser) · `nt-edit <dir> [port]` (live reload + in-browser editor + draggable widget)
+**Toolkit** — `nt-build` · `nt-size <dir>` · `nt-zip <dir>` · `nt-images <dir>` · `nt-check <url|client>` · `nt-qr <url|client>` · `nt-clean` · `nt-doctor` · `nt-notes <client> ["…"]` · `nt-gui [port]`
+**Setup** — `nt-init` · `nt-config` · `nt-update` · `nt-version`
+**Global** — append `-p <project>` to target any project · `NT_AUTO_UPDATE=1` for silent updates · full help: `nt-help`
 
 ## Notes
 - Deploy/rollback are non-interactive with `-y`; production overwrite asks to confirm.

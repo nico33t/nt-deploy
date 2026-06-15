@@ -125,68 +125,66 @@ nt_docs(){
 # Design System — $NAME
 
 > Single source of truth for UI, read by AI agents (Claude Code, Cursor, Copilot, Stitch)
-> as guardrails for every generation. Sections start EMPTY on purpose — see
-> "9. Agent Prompt Guide": the agent must fill them WITH the user, not invent values.
+> as guardrails for every generation. This is a strong DEFAULT base — values are sensible
+> professional defaults you can keep or change. Items marked (edit) should be tailored with
+> the user (see "9. Agent Prompt Guide"). For a real brand starting point: \`nt-design add <brand>\`.
 
 ## 1. Visual Theme & Atmosphere
-<!-- Overall visual tone and the brand's aesthetic intent -->
--
--
+- Clean, modern, content-first: generous whitespace, restrained color, strong type hierarchy. (edit)
+- Calm and trustworthy; a single accent color used sparingly for actions. (edit)
 
 ## 2. Color Palette & Roles
-<!-- Semantic roles, not just hex values -->
 | Role | Token | Value |
 |---|---|---|
-| primary |  |  |
-| surface |  |  |
-| accent |  |  |
-| error |  |  |
-- Notes:
+| background | --bg | #ffffff |
+| surface | --surface | #f6f7f9 |
+| foreground (text) | --fg | #14181f |
+| muted text | --muted | #5b6573 |
+| border | --border | #e5e8ec |
+| primary | --primary | #2563eb |
+| accent | --accent | #2563eb |
+| success | --success | #16a34a |
+| error | --error | #dc2626 |
+- Dark mode: invert bg/fg via \`prefers-color-scheme\`. (edit)
 
 ## 3. Typography Rules
-- Font families:
-- Type scale:
-- Weights:
-- Line heights:
+- Font families: system stack (system-ui, -apple-system, "Segoe UI", Roboto) — zero network cost. Use a web font only if essential, and \`preload\` it. (edit)
+- Type scale (fluid): h1 \`clamp(2.2rem,6vw,3.5rem)\` · h2 \`clamp(1.6rem,4vw,2.2rem)\` · body 1rem · small .875rem.
+- Weights: 400 body · 600 medium · 700 headings.
+- Line heights: 1.6 body · 1.15 headings.
 
 ## 4. Component Stylings
-- Buttons (variants + states):
-- Cards:
-- Forms / inputs:
-- Navigation:
+- Buttons: radius 10px, padding .7rem 1.2rem. primary = solid --primary; secondary = --surface + 1px --border; ghost = transparent. States: hover (darker/raised), focus-visible (3px ring), disabled (.5 opacity).
+- Cards: white/--surface, 1px --border, radius 12px, shadow-sm, 20–24px padding.
+- Forms/inputs: 1px --border, radius 8px, padding .6rem .8rem; focus = 2px --primary ring; error = --error border + helper text.
+- Navigation: sticky top, backdrop-blur, 1px bottom border; mobile = hamburger → panel.
 
 ## 5. Layout Principles
-- Grid:
-- Breakpoints:
-- Base spacing:
+- Container max-width 1080px, centered; side padding \`clamp(16px,5vw,40px)\`.
+- 12-column mental grid; card lists via \`auto-fit minmax(260px,1fr)\`.
+- Spacing rhythm: 8px base (8/12/16/24/32/48/64).
 
 ## 6. Depth & Elevation
-- Shadows:
-- Z-index layers:
-- Layering rules:
+- Shadows: sm \`0 1px 2px rgba(0,0,0,.06)\` · md \`0 6px 20px rgba(0,0,0,.10)\` · lg \`0 18px 50px rgba(0,0,0,.16)\`.
+- Z-index: base 0 · sticky/nav 10 · dropdown 50 · overlay/modal 100 · toast 1000.
+- Keep elevation subtle; reserve lg shadows for modals.
 
 ## 7. Do's and Don'ts
-- ✅ Do:
-- ❌ Don't:
+- ✅ Do: one accent color, generous whitespace, visible focus, set \`width\`/\`height\` on media, WebP images (\`nt-images\`).
+- ❌ Don't: render-blocking web fonts, contrast < 4.5:1, layout-shifting elements, more than 2 type families.
 
 ## 8. Responsive Behavior
-- Desktop:
-- Tablet:
-- Mobile:
+- Breakpoints: mobile < 640 · tablet 640–1024 · desktop > 1024.
+- Desktop: multi-column, full nav. Tablet: 2-column, condensed. Mobile: single column, tap targets ≥ 44px, collapsed nav.
 
 ## 9. Agent Prompt Guide
 Instructions for AI agents reading this file:
-- This file is the source of truth for UI. Use ONLY values defined above.
-- If a section is empty, DO NOT invent values. First ask the user the questions
-  below, then write the answers back into the sections above, then build.
-- Questions to ask before building:
-  1. What feeling should the site evoke? (minimal, bold, playful, luxury, editorial…)
-  2. Brand colors — existing palette or logo to match?
-  3. Typography vibe (serif/sans, classic/modern) or specific fonts?
-  4. Reference sites you like?
-  5. Light, dark, or both?
-  6. Primary audience and main devices?
-- Never introduce colors, fonts, or spacing outside the documented scale.
+- These are professional DEFAULTS — confirm or change them WITH the user before building.
+- If the user has a brand kit or reference, adapt the values above to it, or run
+  \`nt-design add <brand>\` to start from a real brand template.
+- Ask the user: 1) feeling/aesthetic? 2) brand colors/logo? 3) typography vibe? 4) reference
+  sites? 5) light, dark, or both? 6) audience and main devices?
+- Use ONLY values defined above; never introduce off-scale colors, fonts, or spacing.
 - Validate every component against section 7 and accessibility (contrast ≥ 4.5:1, visible focus).
 MD
   cat > "$1/AGENTS.md" <<MD
@@ -515,9 +513,10 @@ case $ACTION in
   create|scaffold)
     NAME="${1:-site}"; SAFE=$(sanitize_branch "$NAME"); URL=$(url_for "$SAFE")
     [ -e "$SAFE" ] && { err "'$SAFE' already exists"; exit 1; }
-    STACK=""; SERVE=""
+    STACK=""; SERVE=""; DESIGN_BRAND=""
     for a in "${@:2}"; do case "$a" in
       --vite) STACK=vite;; --plain|--static) STACK=plain;; --serve) SERVE=yes;; --no-serve) SERVE=no;;
+      --design=*) DESIGN_BRAND="${a#--design=}";;
     esac; done
     if [ -z "$STACK" ]; then
       if [ -t 0 ]; then
@@ -529,6 +528,9 @@ case $ACTION in
     fi
     if [ -z "$SERVE" ]; then
       if [ -t 0 ]; then read -p "Start a dev server with live reload now? [y/N] " _d; [[ "$_d" =~ ^[sSyY]$ ]] && SERVE=yes || SERVE=no; else SERVE=no; fi
+    fi
+    if [ -z "$DESIGN_BRAND" ] && [ -t 0 ]; then
+      read -p "Use a brand DESIGN.md as a base? (e.g. stripe, linear, notion — empty = blank spec) " DESIGN_BRAND
     fi
     if [ "$STACK" = vite ]; then
       mkdir -p "$SAFE/src" "$SAFE/public"
@@ -601,6 +603,7 @@ CSS
       ok "Created premium starter ${BOLD}$SAFE/${NC} ${DIM}(Vite + HMR)${NC}"
       echo -e "   ${DIM}files:${NC} index.html · src/main.js · src/style.css · package.json · DESIGN.md · AGENTS.md · CLAUDE.md · public/(_headers, robots, sitemap, manifest, favicon, 404)"
       echo -e "   ${DIM}dev:${NC} cd $SAFE && npm install && npm run dev   ${DIM}·  build+ship:${NC} nt-bp $SAFE"
+      [ -n "$DESIGN_BRAND" ] && { "$0" design add "$DESIGN_BRAND" "$SAFE/DESIGN.md"; rm -f "$SAFE/DESIGN.md.bak"; }
       nt_devserve "$SAFE" vite "$SERVE"
       exit 0
     fi
@@ -683,6 +686,7 @@ HDR
     ok "Created premium starter ${BOLD}$SAFE/${NC} ${DIM}(plain HTML/CSS/JS)${NC}"
     echo -e "   ${DIM}files:${NC} index.html · styles.css · app.js · DESIGN.md · AGENTS.md · CLAUDE.md · _headers · robots.txt · sitemap.xml · site.webmanifest · favicon.svg · 404.html"
     echo -e "   ${DIM}preview:${NC} nt-serve $SAFE   ${DIM}·  ship:${NC} nt-push $SAFE $SAFE   ${DIM}·  audit:${NC} nt-audit $SAFE"
+    [ -n "$DESIGN_BRAND" ] && { "$0" design add "$DESIGN_BRAND" "$SAFE/DESIGN.md"; rm -f "$SAFE/DESIGN.md.bak"; }
     nt_devserve "$SAFE" plain "$SERVE"
     ;;
 
