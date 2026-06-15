@@ -255,8 +255,13 @@ nt_devserve(){
     info "📦 Installing deps + starting Vite (HMR — edit and see changes live)…"
     ( cd "$1" && npm install && npm run dev )
   else
-    if have npx; then info "🔁 Starting live-server (auto-reload on save)…"; ( cd "$1" && npx --yes live-server )
-    elif have python3; then warn "live-server unavailable; serving without auto-reload (refresh manually)."; ( cd "$1" && python3 -m http.server 8080 )
+    E="$CONFIG_DIR/nt-edit.py"; [ -f "$E" ] || E="$(dirname "$0")/nt-edit.py"
+    if [ -f "$E" ] && have python3; then
+      info "🔁 Live editor + auto-reload at http://localhost:8080 (drag the bottom-right widget)…"
+      have open && (sleep 1; open "http://localhost:8080") &
+      python3 "$E" "$1" 8080
+    elif have npx; then info "🔁 Starting live-server (auto-reload)…"; ( cd "$1" && npx --yes live-server )
+    elif have python3; then warn "serving without auto-reload (refresh manually)."; ( cd "$1" && python3 -m http.server 8080 )
     else err "Need npx or python3 to run a dev server."; fi
   fi
 }
@@ -472,6 +477,7 @@ case $ACTION in
   serve)
     DIR="${1:-.}"; PORT="${2:-8080}"; [ -d "$DIR" ] || { err "Folder '$DIR' not found"; exit 1; }
     info "🖥  Local server: ${BOLD}http://localhost:$PORT${NC}${BLUE}  (Ctrl-C to stop)${NC}"
+    have open && (sleep 1; open "http://localhost:$PORT") &
     if have python3; then (cd "$DIR" && python3 -m http.server "$PORT")
     elif have npx; then npx --yes serve -l "$PORT" "$DIR"
     else err "Need python3 or npx"; exit 1; fi
@@ -863,6 +869,20 @@ HTML
     NT_PROJECT="$PROJECT" NT_SCRIPT="$(cd "$(dirname "$0")"&&pwd)/$(basename "$0")" python3 "$GUI" "$PORT"
     ;;
 
+  # ───── LIVE EDITOR (dev server + in-browser text editor) ─────
+  edit)
+    DIR="${1:-.}"; PORT="${2:-8080}"; [ -d "$DIR" ] || { err "Folder '$DIR' not found"; exit 1; }
+    E="$CONFIG_DIR/nt-edit.py"; [ -f "$E" ] || E="$(dirname "$0")/nt-edit.py"
+    [ -f "$E" ] || { err "nt-edit.py not found"; exit 1; }
+    have python3 || { err "python3 required"; exit 1; }
+    HOST=localhost
+    grep -qE "^[^#]*[[:space:]]nt\.local([[:space:]]|$)" /etc/hosts 2>/dev/null && HOST=nt.local
+    URL="http://$HOST:$PORT"
+    info "✎ Live editor → ${BOLD}$URL${NC}${BLUE}  (edit files in the browser · auto-reload on save · Ctrl-C to stop)${NC}"
+    have open && (sleep 1; open "$URL") &
+    python3 "$E" "$DIR" "$PORT"
+    ;;
+
   # ───── SETUP ─────
   init)
     check_wrangler; banner
@@ -910,6 +930,7 @@ ${BOLD}QUALITY & TRAFFIC${NC}
 
 ${BOLD}TOOLKIT${NC} ${DIM}(works without Cloudflare too)${NC}
   nt-serve [dir] [port]      Local static server
+  nt-edit [dir] [port]       Live dev server + in-browser text editor (auto-reload on save)
   nt-create [client]         Premium scaffold (DESIGN.md, AGENTS.md, _headers, manifest…) tuned for top PageSpeed
   nt-design list|add <brand> Fetch a brand DESIGN.md from the community library (Stripe, Linear, Notion…)
   nt-new [name]              Minimal starter site, ready to deploy

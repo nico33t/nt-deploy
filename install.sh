@@ -58,6 +58,15 @@ else
 fi
 [ -f "$INSTALL_DIR/nt-gui.py" ] && echo -e "${GREEN}✓${NC} GUI installata in $INSTALL_DIR/nt-gui.py"
 
+# 3b-bis. Copia l'editor live (best-effort)
+if [ -f "./scripts/nt-edit.py" ]; then
+  cp ./scripts/nt-edit.py "$INSTALL_DIR/nt-edit.py"
+else
+  REPO_URL="${NT_REPO_URL:-https://raw.githubusercontent.com/nico33t/nt-deploy/main}"
+  curl -fsSL "$REPO_URL/scripts/nt-edit.py" -o "$INSTALL_DIR/nt-edit.py" 2>/dev/null || true
+fi
+[ -f "$INSTALL_DIR/nt-edit.py" ] && echo -e "${GREEN}✓${NC} Editor live installato in $INSTALL_DIR/nt-edit.py"
+
 # 3c. Registra la skill per Claude Code (se presente ~/.claude)
 if [ -d "$HOME/.claude" ]; then
   SKILL_DIR="$HOME/.claude/skills/nt-deploy"
@@ -111,6 +120,7 @@ alias nt-analytics='$NT analytics'
 alias nt-stats='$NT analytics stats'
 # toolkit
 alias nt-serve='$NT serve'
+alias nt-edit='$NT edit'
 alias nt-create='$NT create'
 alias nt-design='$NT design'
 alias nt-new='$NT new'

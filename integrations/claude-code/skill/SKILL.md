@@ -21,15 +21,17 @@ Before/after scaffolding, also **ask the user whether to start a live-reload dev
 If yes: `~/.nt-tools/nt-deploy.sh serve <dir>` (plain) or `cd <dir> && npm install && npm run dev`
 (Vite). You can also pass `--serve` to `create` to start it automatically.
 
-After scaffolding, read the new `DESIGN.md` and ask the user the questions in its
-"Agent Prompt Guide" before generating any UI. **If the user can't or doesn't want to
+After scaffolding, read the new `DESIGN.md`. **First ask whether the user already has an
+example `DESIGN.md`** (or a reference site / brand kit) to draw inspiration from — if so,
+seed the design from it (or pull a close one with `nt-design add <brand>`). Otherwise ask the
+questions in the "Agent Prompt Guide" before generating any UI. **If the user can't or doesn't want to
 answer** (e.g. "propose it yourself", "give me a base"), don't stall: offer a base to draw
 from — either propose sensible defaults and write them into `DESIGN.md`, or fetch a ready
 brand template with `nt-design add <brand>` (e.g. stripe, linear, notion). Always fill
 `DESIGN.md` first, then build against it; never invent values silently.
 
 ## Other commands
-- Preview: `nt-serve <dir>` · Deploy: `nt-push <dir> <client>` · All-in-one: `nt-ship <client>`
+- Preview: `nt-serve <dir>` · Live editor (edit in browser + auto-reload): `nt-edit <dir>` · Deploy: `nt-push <dir> <client>` · All-in-one: `nt-ship <client>`
 - Rollback: `nt-rollback <client>` · Snapshots: `nt-snapshots <client>`
 - Audit (PageSpeed): `nt-audit <url|client>` · Images→WebP: `nt-images <dir>`
 - Brand template: `nt-design add <brand>` · GUI: `nt-gui` · Diagnostics: `nt-doctor`
