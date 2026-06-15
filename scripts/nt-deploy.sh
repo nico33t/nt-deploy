@@ -357,6 +357,11 @@ nt_saas_docs(){
 
 > Template — the AI agent fills this WITH the user, then exports BUSINESS_PLAN.pdf.
 
+## 0. Architecture & scalability (core — decide first)
+- **Docker-first**: ship as a small, stateless container (see \`Dockerfile\` + \`docker-compose.yml\`).
+- **Scale horizontally**: stateless app + managed DB/cache; \`docker compose up --scale app=N\`, then Kubernetes/Fly/ECS when needed.
+- **Multi-tenant** by default; rate limits + billing alerts on every paid API; observability (logs/metrics/traces) from day one.
+
 ## 1. Problem
 - What painful, frequent, expensive problem does $NAME solve? For whom?
 
@@ -1143,6 +1148,43 @@ HDR
     mkdir -p "$SAFE"
     # agent guardrails + planning + legal
     nt_docs "$SAFE"; nt_saas_docs "$SAFE"; nt_legal "$SAFE"
+    # Docker-first + scalability (core for every SaaS)
+    cat > "$SAFE/Dockerfile" <<'DOCK'
+# Multi-stage, small, production image. Stateless → scales horizontally.
+FROM node:22-alpine AS build
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+FROM node:22-alpine AS run
+WORKDIR /app
+ENV NODE_ENV=production PORT=3000
+COPY --from=build /app .
+EXPOSE 3000
+# Run as non-root; replace with your start command
+USER node
+CMD ["npm","start"]
+DOCK
+    cat > "$SAFE/docker-compose.yml" <<'DC'
+services:
+  app:
+    build: .
+    ports: ["3000:3000"]
+    env_file: [.env]
+    restart: unless-stopped
+    # scale horizontally:  docker compose up --scale app=3
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me}
+    volumes: ["dbdata:/var/lib/postgresql/data"]
+    restart: unless-stopped
+volumes:
+  dbdata:
+DC
+    printf 'node_modules\n.git\ndist\n.next\n.env\n*.log\n' > "$SAFE/.dockerignore"
+    echo -e "   ${DIM}🐳 Docker:${NC} docker compose up --build  ${DIM}(scale: --scale app=3)${NC}"
     # business plan → PDF (best-effort, headless Chrome)
     CHROME=$(nt_chrome)
     if [ -n "$CHROME" ]; then
@@ -1271,6 +1313,17 @@ CSS
       echo "$BIG" | while read -r f; do [ -n "$f" ] && echo -e "   ${DIM}$(human_size "$(wc -c < "$f")")  ${f#./}${NC}"; done
       echo -e "   Fix (keeps quality, rewrites HTML refs):  ${BLUE}too images .${NC}"
     fi
+    SKF="$HOME/.claude/skills/nt-deploy/SKILL.md"
+    [ -f "$SKF" ] && echo -e "   ${GREEN}✓${NC} Claude Code skill installed ${DIM}(~/.claude/skills/nt-deploy)${NC}" || echo -e "   ${YELLOW}▲${NC} Claude Code skill not installed — run: ${BLUE}too skill${NC}"
+    ;;
+
+  skill)
+    SK="$HOME/.claude/skills/nt-deploy"; SRC="$(cd "$(dirname "$0")" && pwd)/../integrations/claude-code/skill/SKILL.md"
+    if [ "$1" = status ]; then [ -f "$SK/SKILL.md" ] && ok "Claude Code skill installed: $SK/SKILL.md" || warn "Not installed — run: too skill"; exit 0; fi
+    mkdir -p "$SK"
+    if [ -f "$SRC" ]; then cp "$SRC" "$SK/SKILL.md"
+    else curl -fsSL "$REPO_RAW/integrations/claude-code/skill/SKILL.md" -o "$SK/SKILL.md" 2>/dev/null; fi
+    [ -f "$SK/SKILL.md" ] && ok "Claude Code skill installed → $SK/SKILL.md ${DIM}(restart Claude Code to load)${NC}" || err "Could not install the skill"
     ;;
 
   assets|brand)   # discover existing brand assets (logos, images, fonts, colors)

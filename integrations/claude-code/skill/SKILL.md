@@ -78,6 +78,12 @@ Match style to audience and goal, never to fashion.
 - **Speed converts**: every second of load loses conversions — WebP, no render-blocking fonts, defer JS.
 - Accessibility = more customers: contrast ≥ 4.5:1, visible focus, captions/poster on video.
 
+## SaaS rule (`too create-saas`)
+When building a SaaS, treat these as the PRIMARY points and call them out:
+- **Docker-first & scalability**: a stateless container (Dockerfile + docker-compose are generated); scale horizontally (`--scale app=N` → k8s/Fly/ECS); multi-tenant by default; rate limits + billing alerts; observability.
+- **One killer feature** rivals don't have (see `KILLER_FEATURE.md`) — 10x, defensible, demoable.
+- Study the idea + market first (`BUSINESS_PLAN.md`, `COMPETITORS.md`), then build the code.
+
 ## All commands
 **Deploy** — `too push <dir> <client>` · `too ship <client>` (build+deploy+QR+open) · `too bp <client>` (build+push)
 **Time Machine** — `too rollback <client> [ts]` · `too snapshots <client>`
