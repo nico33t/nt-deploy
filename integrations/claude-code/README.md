@@ -1,6 +1,6 @@
-# nt-deploy — Claude Code plugin (+ MCP)
+# TooFast — Claude Code plugin (+ MCP)
 
-Run nt-deploy straight from Claude Code: deploy, roll back, audit and scaffold sites
+Run TooFast straight from Claude Code: deploy, roll back, audit and scaffold sites
 through natural language, backed by an MCP server.
 
 ## What you get
@@ -9,7 +9,7 @@ through natural language, backed by an MCP server.
   `nt_snapshots`, `nt_audit`, `nt_check`, `nt_clients`, `nt_projects`, `nt_list`, `nt_create`.
 - **Slash commands**: `/deploy`, `/rollback`, `/audit`.
 
-Requires the nt-deploy CLI installed (`nt-deploy.sh` on PATH or `~/.nt-tools/nt-deploy.sh`).
+Requires the TooFast CLI installed (`TooFast.sh` on PATH or `~/.nt-tools/TooFast.sh`).
 
 ## Install
 
@@ -18,12 +18,12 @@ Add to your Claude Code settings (or use it as a plugin directory):
 ```json
 {
   "mcpServers": {
-    "nt-deploy": { "command": "python3", "args": ["/absolute/path/to/integrations/claude-code/mcp/nt_mcp.py"] }
+    "TooFast": { "command": "python3", "args": ["/absolute/path/to/integrations/claude-code/mcp/nt_mcp.py"] }
   }
 }
 ```
 
-The server runs `nt-deploy.sh` with a strict, no-shell argument allowlist (same security
+The server runs `TooFast.sh` with a strict, no-shell argument allowlist (same security
 posture as the GUI). Destructive tools (`nt_rollback`) run non-interactively, so review
 before confirming in chat.
 

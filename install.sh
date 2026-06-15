@@ -97,53 +97,9 @@ fi
 # 5. Aggiungi alias se non già presenti
 NT="~/.nt-tools/nt-deploy.sh"
 ALIAS_BLOCK="# >>> nt-deploy >>>
-alias nt='$NT'
+alias too='$NT'
 alias toofast='$NT'
 alias tf='$NT'
-# deploy
-alias nt-push='$NT push'
-alias nt-ship='$NT ship'
-alias nt-bp='$NT bp'
-# time machine
-alias nt-rollback='$NT rollback'
-alias nt-snapshots='$NT snapshots'
-# gestione
-alias nt-list='$NT list'
-alias nt-clients='$NT clients'
-alias nt-projects='$NT projects'
-alias nt-rm='$NT rm'
-alias nt-rmproject='$NT rmproject'
-alias nt-logs='$NT logs'
-alias nt-open='$NT open'
-alias nt-copy='$NT copy'
-# qualità & traffico
-alias nt-audit='$NT audit'
-alias nt-analytics='$NT analytics'
-alias nt-stats='$NT analytics stats'
-# toolkit
-alias nt-serve='$NT serve'
-alias nt-edit='$NT edit'
-alias nt-create='$NT create'
-alias nt-design='$NT design'
-alias nt-new='$NT new'
-alias nt-card='$NT card'
-alias nt-build='$NT build'
-alias nt-size='$NT size'
-alias nt-zip='$NT zip'
-alias nt-images='$NT images'
-alias nt-check='$NT check'
-alias nt-qr='$NT qr'
-alias nt-clean='$NT clean'
-alias nt-doctor='$NT doctor'
-alias nt-assets='$NT assets'
-alias nt-notes='$NT notes'
-alias nt-gui='$NT gui'
-# setup
-alias nt-init='$NT init'
-alias nt-config='$NT config'
-alias nt-update='$NT update'
-alias nt-version='$NT version'
-alias nt-help='$NT help'
 # <<< nt-deploy <<<"
 
 if grep -q ">>> nt-deploy >>>" "$SHELL_RC" 2>/dev/null; then

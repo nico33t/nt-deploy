@@ -1,6 +1,6 @@
 #!/bin/bash
 # toofast (formerly nt-deploy): the web super-tool. Sites & SaaS from idea to live.
-# https://github.com/nico33t/toofast   ·   commands: toofast | tf | nt | nt-*
+# https://github.com/nico33t/toofast   ·   commands: toofast | tf | nt | too *
 
 VERSION="3.0.0"
 REPO_RAW="https://raw.githubusercontent.com/nico33t/toofast/main"
@@ -56,7 +56,7 @@ banner() {
   echo "    ┏┓╋ ┏┫┏┓┏┓┃┏┓┓┏"
   echo -e "    ┛┗┗━┗┻┗━┣┛┗┛┗━┗┛   ⚡${NC}"
   echo -e "${BOLD} ⚡ TooFast ${DIM}v$VERSION${NC} ${DIM}— sites & SaaS from idea to live, ${NC}${BOLD}fast${NC}"
-  echo -e " ${DIM}https://github.com/nico33t/toofast  ·  commands: toofast | tf | nt-*${NC}\n"
+  echo -e " ${DIM}https://github.com/nico33t/toofast  ·  commands: toofast | tf | too *${NC}\n"
 }
 err(){ echo -e "${RED}❌ $1${NC}"; }; ok(){ echo -e "${GREEN}✅ $1${NC}"; }
 info(){ echo -e "${BLUE}$1${NC}"; }; warn(){ echo -e "${YELLOW}$1${NC}"; }
@@ -94,7 +94,7 @@ check_for_updates(){
   local rv; rv=$(fetch_remote_version)
   if [ -n "$rv" ] && [ "$rv" != "$VERSION" ]; then
     if [ "${NT_AUTO_UPDATE:-0}" = "1" ]; then echo ""; info "💡 Auto-update v$VERSION → v$rv…"; self_update silent
-    else echo ""; warn "💡 New version available: ${GREEN}$rv${YELLOW} (yours: $VERSION)"; echo -e "   Update: ${BLUE}nt-update${NC} ${DIM}(or set NT_AUTO_UPDATE=1)${NC}"; fi
+    else echo ""; warn "💡 New version available: ${GREEN}$rv${YELLOW} (yours: $VERSION)"; echo -e "   Update: ${BLUE}too update${NC} ${DIM}(or set NT_AUTO_UPDATE=1)${NC}"; fi
   fi
 }
 self_update(){
@@ -127,11 +127,11 @@ nt_docs(){
 > Single source of truth for UI, read by AI agents (Claude Code, Cursor, Copilot, Stitch)
 > as guardrails for every generation. This is a strong DEFAULT base — values are sensible
 > professional defaults you can keep or change. Items marked (edit) should be tailored with
-> the user (see "9. Agent Prompt Guide"). For a real brand starting point: \`nt-design add <brand>\`.
+> the user (see "9. Agent Prompt Guide"). For a real brand starting point: \`too design add <brand>\`.
 
 ## 1. Visual Theme & Atmosphere
 - Purpose: in one line, what this site must represent and the single primary action (the goal). (edit)
-- Direction: clean, modern, content-first — generous whitespace, restrained color, strong type hierarchy. (edit)
+- Direction: clean, modern, contetoo first — generous whitespace, restrained color, strong type hierarchy. (edit)
 - Calm and trustworthy; a single accent color used sparingly for actions. (edit)
 
 ## 2. Color Palette & Roles
@@ -173,7 +173,7 @@ nt_docs(){
 - Keep elevation subtle; reserve lg shadows for modals.
 
 ## 7. Do's and Don'ts
-- ✅ Do: one accent color, generous whitespace, visible focus, set \`width\`/\`height\` on media, WebP images (\`nt-images\`).
+- ✅ Do: one accent color, generous whitespace, visible focus, set \`width\`/\`height\` on media, WebP images (\`too images\`).
 - ❌ Don't: render-blocking web fonts, contrast < 4.5:1, layout-shifting elements, more than 2 type families.
 
 ## 8. Responsive Behavior
@@ -184,7 +184,7 @@ nt_docs(){
 Instructions for AI agents reading this file:
 - These are professional DEFAULTS — confirm or change them WITH the user before building.
 - If the user has a brand kit or reference, adapt the values above to it, or run
-  \`nt-design add <brand>\` to start from a real brand template.
+  \`too design add <brand>\` to start from a real brand template.
 - Ask the user: 1) feeling/aesthetic? 2) brand colors/logo? 3) typography vibe? 4) reference
   sites? 5) light, dark, or both? 6) audience and main devices?
 - Before building, reason explicitly about: the DIRECTION and what the site must represent;
@@ -208,10 +208,10 @@ Guidance for AI coding agents working in this repository.
 ## Quality bar
 - Target PageSpeed ≥ 95 (mobile): no render-blocking web fonts, defer JS, set width/height on media.
 - Accessible: semantic landmarks, visible focus, contrast ≥ 4.5:1, "skip to content".
-- Keep payload lean; convert images to WebP (\`nt-images\`).
+- Keep payload lean; convert images to WebP (\`too images\`).
 
 ## Project
-- Static site deployed to Cloudflare Pages with nt-deploy: \`nt-push . <client>\`.
+- Static site deployed to Cloudflare Pages with nt-deploy: \`too push . <client>\`.
 - Security & cache headers live in \`_headers\`. PWA config in \`site.webmanifest\`.
 
 ## Don't
@@ -230,7 +230,7 @@ Always refer to DESIGN.md when generating UI components.
 - If a DESIGN.md section is empty, ask the user the questions in its "Agent Prompt Guide" before generating
 
 ## Build & deploy
-- Preview: \`nt-serve .\`  ·  Audit: \`nt-audit <client>\`  ·  Ship: \`nt-push . <client>\`
+- Preview: \`too serve .\`  ·  Audit: \`too audit <client>\`  ·  Ship: \`too push . <client>\`
 - Keep PageSpeed ≥ 95 and respect \`_headers\` (CSP, caching).
 MD
   echo "NT_PROJECT=$PROJECT" > "$1/.ntdeploy"
@@ -453,7 +453,7 @@ npm install && npm run dev    # preview before writing features
 \`\`\`
 
 ## Deploy
-- Static/SPA build: \`nt-push dist <client>\`. Full-stack Next.js: deploy on Vercel.
+- Static/SPA build: \`too push dist <client>\`. Full-stack Next.js: deploy on Vercel.
 MD
 }
 nt_devserve(){
@@ -522,7 +522,7 @@ case $ACTION in
     [ -d "$DIR" ] || { err "No snapshots for '$BRANCH'. Deploy at least once first."; exit 1; }
     mapfile -t SNAPS < <(ls -1t "$DIR"/*.tar.gz 2>/dev/null)
     [ "${#SNAPS[@]}" -lt 2 ] && [ -z "$TS" ] && { err "Need at least 2 snapshots to roll back (have ${#SNAPS[@]})."; exit 1; }
-    if [ -n "$TS" ]; then ARCHIVE="$DIR/$TS.tar.gz"; [ -f "$ARCHIVE" ] || { err "Snapshot $TS not found. See: nt-snapshots $BRANCH"; exit 1; }
+    if [ -n "$TS" ]; then ARCHIVE="$DIR/$TS.tar.gz"; [ -f "$ARCHIVE" ] || { err "Snapshot $TS not found. See: too snapshots $BRANCH"; exit 1; }
     else ARCHIVE="${SNAPS[1]}"; fi
     LBL=$(cat "${ARCHIVE%.tar.gz}.meta" 2>/dev/null || basename "$ARCHIVE")
     warn "⏪ Rolling '${BOLD}$BRANCH${NC}${YELLOW}' back to snapshot from ${BOLD}$LBL${NC}"
@@ -544,14 +544,14 @@ case $ACTION in
       sz=$(human_size "$(wc -c < "$f")"); tag=""; [ $i = 0 ] && tag="${GREEN}(current)${NC}"; [ $i = 1 ] && tag="${YELLOW}(rollback →)${NC}"
       echo -e "   ${DIM}$ts${NC}  $meta  ${DIM}$sz${NC}  $tag"; i=$((i+1))
     done
-    echo -e "   ${DIM}Restore with: nt-rollback $BRANCH [timestamp]${NC}"
+    echo -e "   ${DIM}Restore with: too rollback $BRANCH [timestamp]${NC}"
     ;;
 
   # ───── MANAGE (Cloudflare) ─────
   rm|delete)
     check_wrangler; need_jq || exit 1
     CLIENT=""; YES=0; for a in "$@"; do case "$a" in -y|--yes) YES=1;; *) CLIENT="$a";; esac; done
-    [ -z "$CLIENT" ] && { err "Usage: nt-rm <client> [-y]"; exit 1; }
+    [ -z "$CLIENT" ] && { err "Usage: too rm <client> [-y]"; exit 1; }
     BRANCH=$(sanitize_branch "$CLIENT"); [ "$BRANCH" = main ] && { err "Refusing to delete production from here."; exit 1; }
     IDS=$(deployments_json | jq -r --arg b "$BRANCH" '.[] | select((.Branch|ascii_downcase)==$b) | .Id')
     [ -z "$IDS" ] && { warn "No deployments for '$BRANCH'."; exit 0; }
@@ -573,7 +573,7 @@ case $ACTION in
   rmproject|project-rm)
     check_wrangler
     NAME="${1:-}"; YES=0; [ "$2" = "-y" ] && YES=1
-    [ -z "$NAME" ] && { err "Usage: nt-rmproject <project-name>"; exit 1; }
+    [ -z "$NAME" ] && { err "Usage: too rmproject <project-name>"; exit 1; }
     warn "⚠️  This deletes the ENTIRE project '${BOLD}$NAME${NC}${YELLOW}' and ALL its deployments. This cannot be undone."
     if [ "$YES" != 1 ]; then
       read -p "   Type the project name to confirm: " CONF
@@ -626,7 +626,7 @@ case $ACTION in
       k="${m%%:*}"; lbl="${m##*:}"; v=$(echo "$J"|jq -r --arg k "$k" '.lighthouseResult.audits[$k].displayValue // "—"')
       printf "     ${BOLD}%-12s${NC} %s\n" "$lbl" "$v"
     done
-    echo -e "   ${DIM}desktop run: nt-audit $A desktop  ·  same engine as pagespeed.web.dev${NC}"
+    echo -e "   ${DIM}desktop run: too audit $A desktop  ·  same engine as pagespeed.web.dev${NC}"
     ;;
 
   # ───── ANALYTICS / TRAFFIC ─────
@@ -636,7 +636,7 @@ case $ACTION in
       inject)
         FOLDER="${1:-.}"; TOKEN="${2:-$NT_CF_BEACON}"
         [ -d "$FOLDER" ] || { err "Folder '$FOLDER' not found"; exit 1; }
-        [ -z "$TOKEN" ] && { err "Need a Web Analytics token: nt-analytics inject <folder> <token>"; echo "   Create it: dash.cloudflare.com → Web Analytics → Add a site"; exit 1; }
+        [ -z "$TOKEN" ] && { err "Need a Web Analytics token: too analytics inject <folder> <token>"; echo "   Create it: dash.cloudflare.com → Web Analytics → Add a site"; exit 1; }
         SNIP="<script defer src=\"https://static.cloudflareinsights.com/beacon.min.js\" data-cf-beacon='{\"token\":\"$TOKEN\"}'></script>"
         C=0; while IFS= read -r f; do
           grep -q "static.cloudflareinsights.com/beacon" "$f" && continue
@@ -653,7 +653,7 @@ case $ACTION in
           echo -e "     ${BLUE}export NT_CF_TOKEN=...${NC}    ${DIM}# API token with Analytics:Read${NC}"
           echo -e "     ${BLUE}export NT_CF_ACCOUNT=...${NC}  ${DIM}# Account ID${NC}"
           echo -e "     ${BLUE}export NT_CF_SITETAG=...${NC}  ${DIM}# site tag (from the beacon)${NC}"
-          echo -e "   Or open the dashboard:  ${BLUE}nt-analytics open${NC}"
+          echo -e "   Or open the dashboard:  ${BLUE}too analytics open${NC}"
           exit 0
         fi
         need_jq || exit 1
@@ -661,24 +661,24 @@ case $ACTION in
         UNTIL=$(date -u +%Y-%m-%dT%H:%M:%SZ)
         Q=$(jq -nc --arg a "$NT_CF_ACCOUNT" --arg t "$NT_CF_SITETAG" --arg s "$SINCE" --arg u "$UNTIL" \
           '{query:"query($a:String!,$t:String!,$s:Time!,$u:Time!){viewer{accounts(filter:{accountTag:$a}){rumPageloadEventsAdaptiveGroups(limit:1,filter:{siteTag:$t,datetime_geq:$s,datetime_leq:$u}){count sum{visits}}}}}",variables:{a:$a,t:$t,s:$s,u:$u}}')
-        R=$(curl -fsSL --max-time 20 -H "Authorization: Bearer $NT_CF_TOKEN" -H "Content-Type: application/json" -d "$Q" https://api.cloudflare.com/client/v4/graphql) \
+        R=$(curl -fsSL --max-time 20 -H "Authorization: Bearer $NT_CF_TOKEN" -H "Contetoo Type: application/json" -d "$Q" https://api.cloudflare.com/client/v4/graphql) \
           || { err "API request failed."; exit 1; }
         echo "$R" | jq -e '.errors and (.errors|length>0)' >/dev/null 2>&1 && { err "API: $(echo "$R"|jq -r '.errors[0].message')"; exit 1; }
         G=$(echo "$R"|jq -r '.data.viewer.accounts[0].rumPageloadEventsAdaptiveGroups[0]')
         PV=$(echo "$G"|jq -r '.count // 0'); VS=$(echo "$G"|jq -r '.sum.visits // 0')
         echo -e "   Last 7 days →  Page views: ${BOLD}$PV${NC}   Visits: ${BOLD}$VS${NC}"
         ;;
-      *) echo "Usage: nt-analytics inject <folder> <token> | open | stats" ;;
+      *) echo "Usage: too analytics inject <folder> <token> | open | stats" ;;
     esac
     ;;
 
   # ───── CLIENT NOTES ─────
   notes|note)
-    CLIENT="${1:-}"; [ -z "$CLIENT" ] && { err "Usage: nt-notes <client> [\"note text\"]"; exit 1; }
+    CLIENT="${1:-}"; [ -z "$CLIENT" ] && { err "Usage: too notes <client> [\"note text\"]"; exit 1; }
     B=$(sanitize_branch "$CLIENT"); ND="$CONFIG_DIR/notes/$PROJECT"; mkdir -p "$ND"; F="$ND/$B.md"
     shift; TEXT="$*"
     if [ -n "$TEXT" ]; then echo "- [$(date '+%Y-%m-%d %H:%M')] $TEXT" >> "$F"; ok "Note added for '$B'."
-    else info "🗒  Notes for '$B' (project: $PROJECT):"; [ -s "$F" ] && sed 's/^/   /' "$F" || warn "   no notes yet. Add one: nt-notes $B \"...\""; fi
+    else info "🗒  Notes for '$B' (project: $PROJECT):"; [ -s "$F" ] && sed 's/^/   /' "$F" || warn "   no notes yet. Add one: too notes $B \"...\""; fi
     ;;
 
   # ───── TOOLKIT (works WITHOUT Cloudflare too) ─────
@@ -703,20 +703,20 @@ case $ACTION in
           curl -fsSL "$APIU" 2>/dev/null | jq -r '.[]|select(.type=="dir")|.name' \
             | (command -v column >/dev/null && column -c 76 || cat) | sed 's/^/   /'
         else curl -fsSL "$APIU" 2>/dev/null | grep -o '"name": "[^"]*"' | cut -d'"' -f4 | sed 's/^/   /'; fi
-        echo -e "   ${DIM}Add one:${NC} nt-design add <brand>   ${DIM}(e.g. nt-design add bugatti)${NC}"
+        echo -e "   ${DIM}Add one:${NC} too design add <brand>   ${DIM}(e.g. too design add bugatti)${NC}"
         ;;
       add)
         NAME=$(echo "${1:-}" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9._-]//g')
-        [ -z "$NAME" ] && { err "Usage: nt-design add <brand> [destfile]"; exit 1; }
+        [ -z "$NAME" ] && { err "Usage: too design add <brand> [destfile]"; exit 1; }
         DEST="${2:-DESIGN.md}"; TMP=$(mktemp)
         if curl -fsSL "$BASE/$NAME/DESIGN.md" -o "$TMP" 2>/dev/null && [ -s "$TMP" ]; then
           [ -f "$DEST" ] && { cp "$DEST" "$DEST.bak"; warn "Backed up existing → $DEST.bak"; }
           { echo "<!-- Design template '$NAME' — source: github.com/VoltAgent/awesome-design-md (MIT), design-md/$NAME — fetched $(date +%F) -->"; echo; cat "$TMP"; } > "$DEST"
           rm -f "$TMP"; ok "Added '${BOLD}$NAME${NC}' template → ${BOLD}$DEST${NC}"
           echo -e "   ${DIM}AI agents will now follow this brand's design rules. Tweak as needed.${NC}"
-        else rm -f "$TMP"; err "Template '$NAME' not found. Browse: nt-design list"; fi
+        else rm -f "$TMP"; err "Template '$NAME' not found. Browse: too design list"; fi
         ;;
-      *) echo "Usage: nt-design list | add <brand> [destfile]" ;;
+      *) echo "Usage: too design list | add <brand> [destfile]" ;;
     esac
     ;;
 
@@ -747,11 +747,11 @@ case $ACTION in
       nt_docs "$SAFE"; nt_meta "$SAFE/public"; nt_legal "$SAFE/public"
       cat > "$SAFE/public/_headers" <<'HDR'
 /*
-  X-Content-Type-Options: nosniff
+  X-Contetoo Type-Options: nosniff
   X-Frame-Options: SAMEORIGIN
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(), microphone=(), camera=()
-  Content-Security-Policy: default-src 'self'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; script-src 'self'; base-uri 'self'; form-action 'self'
+  Contetoo Security-Policy: default-src 'self'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; script-src 'self'; base-uri 'self'; form-action 'self'
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
 HDR
@@ -799,20 +799,20 @@ JS
 *,*::before,*::after{box-sizing:border-box;margin:0}
 :root{--bg:#fff;--fg:#0b1020;--muted:#5a6b88;--accent:#6d4aff;--accent2:#35e8ff;--max:1080px}
 /* Light by default. Dark opt-in: @media (prefers-color-scheme:dark){:root{--bg:#0b1020;--fg:#e6f0ff;--muted:#9fb0d0}} */
-body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--fg);line-height:1.6;min-height:100dvh;display:flex;flex-direction:column}
+body{fotoo family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--fg);line-height:1.6;min-height:100dvh;display:flex;flex-direction:column}
 img{max-width:100%;height:auto;display:block}
 .skip{position:absolute;left:-999px}.skip:focus{left:12px;top:12px;background:#fff;color:#000;padding:8px;border-radius:8px}
 .site-header{padding:18px clamp(16px,5vw,40px)}
 main{flex:1;width:100%;max-width:var(--max);margin:0 auto;padding:clamp(40px,9vw,110px) clamp(16px,5vw,40px)}
-.hero h1{font-size:clamp(2.4rem,8vw,4.4rem);line-height:1.05;letter-spacing:-.02em;background:linear-gradient(120deg,var(--accent2),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
-.hero p{margin:18px 0 28px;color:var(--muted);font-size:clamp(1rem,2.6vw,1.3rem);max-width:60ch}
-.cta{display:inline-block;padding:14px 26px;border-radius:12px;text-decoration:none;font-weight:700;background:linear-gradient(120deg,var(--accent2),var(--accent));color:#04060f}
+.hero h1{fotoo size:clamp(2.4rem,8vw,4.4rem);line-height:1.05;letter-spacing:-.02em;background:linear-gradient(120deg,var(--accent2),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{margin:18px 0 28px;color:var(--muted);fotoo size:clamp(1rem,2.6vw,1.3rem);max-width:60ch}
+.cta{display:inline-block;padding:14px 26px;border-radius:12px;text-decoration:none;fotoo weight:700;background:linear-gradient(120deg,var(--accent2),var(--accent));color:#04060f}
 .site-footer{padding:24px clamp(16px,5vw,40px);color:var(--muted)}
 CSS
       printf 'node_modules\ndist\n.DS_Store\n' > "$SAFE/.gitignore"
       ok "Created premium starter ${BOLD}$SAFE/${NC} ${DIM}(Vite + HMR)${NC}"
       echo -e "   ${DIM}files:${NC} index.html · src/main.js · src/style.css · package.json · DESIGN.md · AGENTS.md · CLAUDE.md · public/(_headers, robots, sitemap, manifest, favicon, 404)"
-      echo -e "   ${DIM}dev:${NC} cd $SAFE && npm install && npm run dev   ${DIM}·  build+ship:${NC} nt-bp $SAFE"
+      echo -e "   ${DIM}dev:${NC} cd $SAFE && npm install && npm run dev   ${DIM}·  build+ship:${NC} too bp $SAFE"
       [ -n "$DESIGN_BRAND" ] && { "$0" design add "$DESIGN_BRAND" "$SAFE/DESIGN.md"; rm -f "$SAFE/DESIGN.md.bak"; }
       nt_devserve "$SAFE" vite "$SERVE"
       exit 0
@@ -929,9 +929,9 @@ SVG
     <section id="showcase" class="section section--split">
       <div class="reveal"><p class="eyebrow">Showcase</p><h2>Show your work beautifully.</h2>
         <p class="lede">Swap this illustration for a screenshot or photo. Keep images light —
-          run <code>nt-images</code> to convert them to WebP automatically.</p>
+          run <code>too images</code> to convert them to WebP automatically.</p>
         <a class="btn btn--ghost" href="#contact">See more →</a></div>
-      <!-- DRAFT placeholder photo (royalty-free, Lorem Picsum). Replace with a real/self-hosted image, then run nt-images. -->
+      <!-- DRAFT placeholder photo (royalty-free, Lorem Picsum). Replace with a real/self-hosted image, then run too images. -->
       <img class="panel reveal" src="https://picsum.photos/seed/$SAFE/1200/800" alt="Placeholder — replace with your image" width="1200" height="800" loading="lazy">
     </section>
 
@@ -994,30 +994,30 @@ HTML
 /* Default theme: LIGHT (preferred unless the client asks for dark).
    To opt into auto dark, add: @media (prefers-color-scheme:dark){:root{--bg:#0b1020;--surface:#13182a;--fg:#e9eefb;--muted:#9fb0d0;--border:#222a44}} */
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
-body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--fg);line-height:1.6;-webkit-font-smoothing:antialiased}
+body{fotoo family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--fg);line-height:1.6;-webkit-fotoo smoothing:antialiased}
 img{max-width:100%;height:auto;display:block}a{color:inherit;text-decoration:none}
 :focus-visible{outline:2px solid var(--primary);outline-offset:3px;border-radius:4px}
 .skip{position:absolute;left:-999px}.skip:focus{left:12px;top:12px;background:var(--fg);color:var(--bg);padding:8px 12px;border-radius:8px;z-index:30}
-.eyebrow{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
-.lede{color:var(--muted);font-size:clamp(1rem,2.2vw,1.2rem);max-width:60ch}
-h1,h2,h3{letter-spacing:-.02em;line-height:1.08}h2{font-size:clamp(1.7rem,4.4vw,2.5rem)}h3{font-size:1.15rem}
+.eyebrow{fotoo size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.lede{color:var(--muted);fotoo size:clamp(1rem,2.2vw,1.2rem);max-width:60ch}
+h1,h2,h3{letter-spacing:-.02em;line-height:1.08}h2{fotoo size:clamp(1.7rem,4.4vw,2.5rem)}h3{fotoo size:1.15rem}
 .accent{background:linear-gradient(120deg,var(--primary),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
-.btn{display:inline-flex;align-items:center;gap:8px;background:var(--primary);color:#fff;font-weight:600;font-size:15px;padding:12px 20px;border-radius:10px;border:0;cursor:pointer;transition:.15s;box-shadow:0 6px 22px rgba(37,99,235,.25)}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--primary);color:#fff;fotoo weight:600;fotoo size:15px;padding:12px 20px;border-radius:10px;border:0;cursor:pointer;transition:.15s;box-shadow:0 6px 22px rgba(37,99,235,.25)}
 .btn:hover{background:var(--primary-h);transform:translateY(-1px)}
-.btn--sm{padding:8px 15px;font-size:14px}.btn--lg{padding:15px 28px;font-size:16px}
+.btn--sm{padding:8px 15px;fotoo size:14px}.btn--lg{padding:15px 28px;fotoo size:16px}
 .btn--ghost{background:transparent;color:var(--fg);box-shadow:inset 0 0 0 1px var(--border)}
 .btn--ghost:hover{background:var(--surface)}
 .nav{display:flex;align-items:center;gap:22px;max-width:var(--max);margin:0 auto;padding:16px clamp(16px,5vw,40px)}
-.brand{display:flex;align-items:center;gap:9px;font-weight:700}
+.brand{display:flex;align-items:center;gap:9px;fotoo weight:700}
 .brand__dot{width:11px;height:11px;border-radius:50%;background:var(--primary);box-shadow:0 0 12px var(--primary)}
-.nav__links{display:flex;gap:24px;margin-left:auto;font-size:14px;color:var(--muted)}
-.nav__links a:hover{color:var(--fg)}.nav__toggle{display:none;margin-left:auto;background:0;border:0;font-size:22px;color:var(--fg);cursor:pointer}
+.nav__links{display:flex;gap:24px;margin-left:auto;fotoo size:14px;color:var(--muted)}
+.nav__links a:hover{color:var(--fg)}.nav__toggle{display:none;margin-left:auto;background:0;border:0;fotoo size:22px;color:var(--fg);cursor:pointer}
 main{max-width:var(--max);margin:0 auto;padding:0 clamp(16px,5vw,40px)}
 .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(28px,5vw,56px);align-items:center;padding:clamp(40px,8vw,96px) 0}
-.hero h1{font-size:clamp(2.4rem,7vw,4rem);margin-bottom:18px}
+.hero h1{fotoo size:clamp(2.4rem,7vw,4rem);margin-bottom:18px}
 .hero__cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:26px}
 .hero__art{width:100%;border-radius:var(--r);box-shadow:0 30px 70px rgba(0,0,0,.18)}
-.trust{max-width:var(--max);margin:0 auto;padding:8px clamp(16px,5vw,40px) 24px;color:var(--muted);font-size:13px;text-align:center}
+.trust{max-width:var(--max);margin:0 auto;padding:8px clamp(16px,5vw,40px) 24px;color:var(--muted);fotoo size:13px;text-align:center}
 .trust__row{display:flex;justify-content:center;gap:30px;margin-top:14px;flex-wrap:wrap}
 .trust__row i{width:78px;height:22px;border-radius:6px;background:var(--border)}
 .section{padding:clamp(48px,9vw,104px) 0;border-top:1px solid var(--border)}
@@ -1026,38 +1026,38 @@ main{max-width:var(--max);margin:0 auto;padding:0 clamp(16px,5vw,40px)}
 .card{border:1px solid var(--border);border-radius:var(--r);padding:26px;background:var(--surface);transition:.2s}
 .card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.10)}
 .ic{width:30px;height:30px;color:var(--primary);margin-bottom:14px}
-.card h3{margin-bottom:8px}.card p{color:var(--muted);font-size:.96rem}
+.card h3{margin-bottom:8px}.card p{color:var(--muted);fotoo size:.96rem}
 .section--split{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,6vw,60px);align-items:center}
 .section--split h2{margin:12px 0 14px}.section--split .btn{margin-top:20px}
 .panel{width:100%;border-radius:var(--r);border:1px solid var(--border);box-shadow:0 20px 50px rgba(0,0,0,.12)}
-code{font-family:ui-monospace,Menlo,monospace;background:var(--surface);padding:2px 6px;border-radius:6px;font-size:.9em}
+code{fotoo family:ui-monospace,Menlo,monospace;background:var(--surface);padding:2px 6px;border-radius:6px;fotoo size:.9em}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding:clamp(40px,7vw,80px) 0;border-top:1px solid var(--border);text-align:center}
-.stats b{display:block;font-size:clamp(1.8rem,5vw,2.8rem);background:linear-gradient(120deg,var(--primary),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
-.stats span{color:var(--muted);font-size:.9rem}
+.stats b{display:block;fotoo size:clamp(1.8rem,5vw,2.8rem);background:linear-gradient(120deg,var(--primary),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stats span{color:var(--muted);fotoo size:.9rem}
 .cta-band{text-align:center}.cta-band .lede{margin:14px auto 26px}
 .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
 .step{border:1px solid var(--border);border-radius:var(--r);padding:24px;background:#fff}
-.step b{color:var(--primary);font-family:ui-monospace,Menlo,monospace}.step h3{margin:10px 0 6px}.step p{color:var(--muted);font-size:.95rem}
+.step b{color:var(--primary);fotoo family:ui-monospace,Menlo,monospace}.step h3{margin:10px 0 6px}.step p{color:var(--muted);fotoo size:.95rem}
 .quotes{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
 .quote{border:1px solid var(--border);border-radius:var(--r);padding:24px;background:var(--surface)}
-.quote blockquote{font-size:1.05rem}.quote figcaption{margin-top:14px;color:var(--mfg);font-size:.9rem}
+.quote blockquote{fotoo size:1.05rem}.quote figcaption{margin-top:14px;color:var(--mfg);fotoo size:.9rem}
 .pricing{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
 .tier{border:1px solid var(--border);border-radius:var(--r);padding:28px;background:#fff;display:flex;flex-direction:column}
 .tier.feat{border-color:var(--primary);box-shadow:0 16px 44px rgba(37,99,235,.14)}
-.tier .price{font-size:2rem;font-weight:700;margin:8px 0}
-.tier ul{list-style:none;margin:14px 0;display:flex;flex-direction:column;gap:8px;color:var(--muted);font-size:.95rem}
+.tier .price{fotoo size:2rem;fotoo weight:700;margin:8px 0}
+.tier ul{list-style:none;margin:14px 0;display:flex;flex-direction:column;gap:8px;color:var(--muted);fotoo size:.95rem}
 .tier .btn{margin-top:auto}
 .faq{max-width:760px}
 .faq details{border-bottom:1px solid var(--border);padding:14px 0}
-.faq summary{cursor:pointer;font-weight:600;list-style:none}.faq summary::-webkit-details-marker{display:none}
+.faq summary{cursor:pointer;fotoo weight:600;list-style:none}.faq summary::-webkit-details-marker{display:none}
 .faq p{color:var(--muted);margin-top:8px}
-.footer{max-width:var(--max);margin:0 auto;padding:30px clamp(16px,5vw,40px) 48px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:16px;align-items:center;color:var(--muted);font-size:14px}
-.footer__brand{display:flex;align-items:center;gap:8px;color:var(--fg);font-weight:700}
+.footer{max-width:var(--max);margin:0 auto;padding:30px clamp(16px,5vw,40px) 48px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:16px;align-items:center;color:var(--muted);fotoo size:14px}
+.footer__brand{display:flex;align-items:center;gap:8px;color:var(--fg);fotoo weight:700}
 .footer__links{display:flex;gap:18px;margin:0 auto}.footer__links a:hover{color:var(--fg)}
 .legal{max-width:760px;margin:0 auto;padding:clamp(28px,6vw,64px) clamp(16px,5vw,40px)}
-.legal h1{margin:8px 0 4px}.legal h2{font-size:1.2rem;margin:26px 0 8px}.legal p,.legal li{color:var(--muted)}
-.legal__date{color:var(--muted);font-size:14px}.legal ul{margin:8px 0 8px 20px}
-.legal__note{border:1px solid var(--border);background:var(--surface);border-radius:10px;padding:12px 14px;margin:14px 0;font-size:14px}
+.legal h1{margin:8px 0 4px}.legal h2{fotoo size:1.2rem;margin:26px 0 8px}.legal p,.legal li{color:var(--muted)}
+.legal__date{color:var(--muted);fotoo size:14px}.legal ul{margin:8px 0 8px 20px}
+.legal__note{border:1px solid var(--border);background:var(--surface);border-radius:10px;padding:12px 14px;margin:14px 0;fotoo size:14px}
 .reveal{opacity:1}.js .reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}.js .reveal.in{opacity:1;transform:none}
 @media (max-width:760px){.hero{grid-template-columns:1fr}.section--split{grid-template-columns:1fr}.nav__links{display:none}.nav__toggle{display:block}
  .nav__links.open{display:flex;position:absolute;left:0;right:0;top:62px;flex-direction:column;gap:0;background:var(--bg);border-bottom:1px solid var(--border);padding:8px 24px}.nav__links.open a{padding:10px 0}}
@@ -1083,11 +1083,11 @@ JS
     # — Cloudflare _headers : security + long-cache (plain stack) —
     cat > "$SAFE/_headers" <<'HDR'
 /*
-  X-Content-Type-Options: nosniff
+  X-Contetoo Type-Options: nosniff
   X-Frame-Options: SAMEORIGIN
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: geolocation=(), microphone=(), camera=()
-  Content-Security-Policy: default-src 'self'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; script-src 'self'; base-uri 'self'; form-action 'self'
+  Contetoo Security-Policy: default-src 'self'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; script-src 'self'; base-uri 'self'; form-action 'self'
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
 /styles.css
@@ -1098,7 +1098,7 @@ HDR
     nt_meta "$SAFE"; nt_legal "$SAFE"
     ok "Created premium starter ${BOLD}$SAFE/${NC} ${DIM}(plain HTML/CSS/JS)${NC}"
     echo -e "   ${DIM}files:${NC} index.html · styles.css · app.js · assets/hero.svg · DESIGN.md · AGENTS.md · CLAUDE.md · privacy/cookie/terms · _headers · robots · sitemap · manifest · favicon · 404"
-    echo -e "   ${DIM}preview:${NC} nt-serve $SAFE   ${DIM}·  ship:${NC} nt-push $SAFE $SAFE   ${DIM}·  audit:${NC} nt-audit $SAFE"
+    echo -e "   ${DIM}preview:${NC} too serve $SAFE   ${DIM}·  ship:${NC} too push $SAFE $SAFE   ${DIM}·  audit:${NC} too audit $SAFE"
     [ -n "$DESIGN_BRAND" ] && { "$0" design add "$DESIGN_BRAND" "$SAFE/DESIGN.md"; rm -f "$SAFE/DESIGN.md.bak"; }
     nt_devserve "$SAFE" plain "$SERVE"
     ;;
@@ -1147,7 +1147,7 @@ HDR
     CHROME=$(nt_chrome)
     if [ -n "$CHROME" ]; then
       TMPH=$(mktemp -u).html
-      { echo "<!DOCTYPE html><html><head><meta charset=UTF-8><style>@page{margin:18mm}body{font:14px/1.6 -apple-system,system-ui,sans-serif;color:#14181f;max-width:760px;margin:auto}h1{font-size:30px}h2{font-size:18px;margin-top:22px;border-top:1px solid #e5e8ec;padding-top:14px}code{background:#f6f7f9;padding:1px 5px;border-radius:4px}</style></head><body>";
+      { echo "<!DOCTYPE html><html><head><meta charset=UTF-8><style>@page{margin:18mm}body{font:14px/1.6 -apple-system,system-ui,sans-serif;color:#14181f;max-width:760px;margin:auto}h1{fotoo size:30px}h2{fotoo size:18px;margin-top:22px;border-top:1px solid #e5e8ec;padding-top:14px}code{background:#f6f7f9;padding:1px 5px;border-radius:4px}</style></head><body>";
         if have python3; then python3 - "$SAFE/BUSINESS_PLAN.md" <<'PY'
 import sys,html,re
 for ln in open(sys.argv[1]):
@@ -1161,13 +1161,13 @@ for ln in open(sys.argv[1]):
 PY
         else cat "$SAFE/BUSINESS_PLAN.md"; fi
         echo "</body></html>"; } > "$TMPH"
-      "$CHROME" --headless=new --disable-gpu --no-pdf-header-footer --print-to-pdf="$SAFE/BUSINESS_PLAN.pdf" "file://$TMPH" >/dev/null 2>&1
+      "$CHROME" --headless=new --disable-gpu --no-pdf-header-footer --pritoo to-pdf="$SAFE/BUSINESS_PLAN.pdf" "file://$TMPH" >/dev/null 2>&1
       rm -f "$TMPH"
       [ -s "$SAFE/BUSINESS_PLAN.pdf" ] && echo -e "   ${GREEN}✓${NC} BUSINESS_PLAN.pdf generated"
     else warn "   (install Chrome/Chromium to auto-export BUSINESS_PLAN.pdf)"; fi
     echo ""; ok "SaaS '${BOLD}$SAFE${NC}' scaffolded ${DIM}($STACK)${NC}"
     echo -e "   ${DIM}docs:${NC} BUSINESS_PLAN(.md/.pdf) · COMPETITORS.md · KILLER_FEATURE.md · LAUNCH.md · SETUP.md · DESIGN/AGENTS/CLAUDE · privacy/cookie/terms"
-    echo -e "   ${DIM}next:${NC} 1) research market  2) fill the plan  3) lock the killer feature  4) build  5) preview (nt-edit)  6) audit  7) ship"
+    echo -e "   ${DIM}next:${NC} 1) research market  2) fill the plan  3) lock the killer feature  4) build  5) preview (too edit)  6) audit  7) ship"
     [ "$SERVE" = yes ] && [ "$STACK" != minimal ] && ( cd "$SAFE" && have npm && { npm install && npm run dev; } )
     exit 0
     ;;
@@ -1186,14 +1186,14 @@ PY
 HTML
     cat > "$SAFE/styles.css" <<'CSS'
 *{margin:0;box-sizing:border-box}body{min-height:100dvh;display:grid;place-items:center;
-font-family:system-ui,sans-serif;background:#0b1020;color:#e6f0ff}
-main{text-align:center;padding:2rem}h1{font-size:clamp(2rem,8vw,4rem)}
+fotoo family:system-ui,sans-serif;background:#0b1020;color:#e6f0ff}
+main{text-align:center;padding:2rem}h1{fotoo size:clamp(2rem,8vw,4rem)}
 button{margin-top:1.5rem;padding:.8rem 1.6rem;border:0;border-radius:10px;cursor:pointer;
-background:linear-gradient(120deg,#35e8ff,#8b6cff);color:#04060f;font-weight:700}
+background:linear-gradient(120deg,#35e8ff,#8b6cff);color:#04060f;fotoo weight:700}
 CSS
-    echo "document.getElementById('b').onclick=()=>alert('Deploy with: nt-push $SAFE');" > "$SAFE/app.js"
+    echo "document.getElementById('b').onclick=()=>alert('Deploy with: too push $SAFE');" > "$SAFE/app.js"
     echo "NT_PROJECT=$PROJECT" > "$SAFE/.ntdeploy"
-    ok "Created ${BOLD}$SAFE/${NC}"; echo -e "   ${DIM}nt-serve $SAFE   ·   nt-push $SAFE $SAFE${NC}"
+    ok "Created ${BOLD}$SAFE/${NC}"; echo -e "   ${DIM}too serve $SAFE   ·   too push $SAFE $SAFE${NC}"
     ;;
 
   build)   run_build; OUT=$(detect_outdir); [ -n "$OUT" ] && { ok "Build ready in ${BOLD}$OUT${NC}"; exec "$0" size "$OUT"; } ;;
@@ -1263,13 +1263,13 @@ CSS
     chk(){ if have "$1"; then echo -e "   ${GREEN}✓${NC} $1 ${DIM}$($1 --version 2>/dev/null|head -1)${NC}"; else echo -e "   ${RED}✗${NC} $1 ${DIM}(missing)${NC}"; fi; }
     chk node; chk npm; chk wrangler; chk git; chk jq; chk curl; chk qrencode; chk python3
     echo ""; echo -e "   Project: ${BOLD}$PROJECT${NC} ${DIM}[$NT_SOURCE]${NC}"
-    if have wrangler; then who=$(wrangler whoami 2>/dev/null | grep -i -m1 'email\|account' | sed 's/^/   /'); [ -n "$who" ] && echo -e "${DIM}$who${NC}" || echo -e "   ${YELLOW}Cloudflare: not logged in (nt-init)${NC}"; fi
+    if have wrangler; then who=$(wrangler whoami 2>/dev/null | grep -i -m1 'email\|account' | sed 's/^/   /'); [ -n "$who" ] && echo -e "${DIM}$who${NC}" || echo -e "   ${YELLOW}Cloudflare: not logged in (too init)${NC}"; fi
     # auto-detect heavy images and recommend conversion
     BIG=$(find . -type f \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' \) -size +200k 2>/dev/null | head -6)
     if [ -n "$BIG" ]; then
       echo ""; warn "🖼  Heavy images found (>200KB) — convert to WebP for a higher PageSpeed score:"
       echo "$BIG" | while read -r f; do [ -n "$f" ] && echo -e "   ${DIM}$(human_size "$(wc -c < "$f")")  ${f#./}${NC}"; done
-      echo -e "   Fix (keeps quality, rewrites HTML refs):  ${BLUE}nt-images .${NC}"
+      echo -e "   Fix (keeps quality, rewrites HTML refs):  ${BLUE}too images .${NC}"
     fi
     ;;
 
@@ -1283,7 +1283,7 @@ CSS
     echo -e "   ${BOLD}Logos / brand marks:${NC}"; [ -n "$logos" ] && echo "$logos" | sed 's#^#     #' || echo -e "     ${DIM}none found — ask the client for a logo${NC}"
     echo -e "   ${BOLD}Images:${NC} $(echo "$imgs" | grep -c . | tr -d ' ') file(s)"
     raster=$(echo "$imgs" | grep -iE '\.(png|jpe?g|gif)$')
-    [ -n "$raster" ] && echo -e "     ${YELLOW}↳ raster images present — convert to WebP: nt-images $DIR${NC}"
+    [ -n "$raster" ] && echo -e "     ${YELLOW}↳ raster images present — convert to WebP: too images $DIR${NC}"
     echo -e "   ${BOLD}Fonts:${NC}"; [ -n "$fonts" ] && echo "$fonts" | sed 's#^#     #' || echo -e "     ${DIM}none (system fonts)${NC}"
     [ -n "$srcf" ] && { echo -e "   ${BOLD}Brand source files:${NC}"; echo "$srcf" | sed 's#^#     #'; }
     cols=$(grep -rhoiE '#[0-9a-f]{6}' "$DIR" --include='*.css' --include='*.svg' 2>/dev/null | tr 'A-F' 'a-f' | sort | uniq -c | sort -rn | head -6)
@@ -1310,7 +1310,7 @@ CSS
   card|share)
     warn "🧪 BETA — full handoff card (HTML + PDF) with desktop & mobile screenshots."
     A="${1:-main}"; case "$A" in http*) URL="$A"; NAME="site";; *) NAME="$(sanitize_branch "$A")"; URL=$(url_for "$NAME");; esac
-    TITLE="${2:-$NAME}"; OUT="${NT_CARD_OUT:-nt-card-$NAME}"; HTML="$OUT.html"; PDF="$OUT.pdf"
+    TITLE="${2:-$NAME}"; OUT="${NT_CARD_OUT:-too card-$NAME}"; HTML="$OUT.html"; PDF="$OUT.pdf"
     CHROME=$(nt_chrome); DATE="$(date '+%Y-%m-%d')"
     DESK="<div class=\"ph\">$TITLE</div>"; MOB=""
     if [ -n "$CHROME" ]; then
@@ -1325,22 +1325,22 @@ CSS
     QR=""; have qrencode && QR=$(qrencode -o - -t SVG -m 1 "$URL" 2>/dev/null)
     cat > "$HTML" <<HTML
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>$TITLE — handoff</title>
-<style>@page{size:A4;margin:14mm}*{margin:0;box-sizing:border-box;font-family:-apple-system,Segoe UI,Roboto,system-ui,sans-serif}
+<style>@page{size:A4;margin:14mm}*{margin:0;box-sizing:border-box;fotoo family:-apple-system,Segoe UI,Roboto,system-ui,sans-serif}
 body{color:#14181f;max-width:820px;margin:auto}
 .hero{padding:40px 44px;border-radius:18px;background:linear-gradient(135deg,#0b1020,#1a1740);color:#fff;margin-bottom:26px}
-.hero .tag{font-size:12px;letter-spacing:.24em;color:#7fdcff;text-transform:uppercase}
-.hero h1{font-size:40px;margin:10px 0 6px;line-height:1.05}.hero a{color:#c7b9ff;font-size:15px;text-decoration:none}
-.hero .meta{margin-top:14px;font-size:13px;color:#aeb8d6}
-h2{font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:#5b6573;margin:26px 0 12px}
+.hero .tag{fotoo size:12px;letter-spacing:.24em;color:#7fdcff;text-transform:uppercase}
+.hero h1{fotoo size:40px;margin:10px 0 6px;line-height:1.05}.hero a{color:#c7b9ff;fotoo size:15px;text-decoration:none}
+.hero .meta{margin-top:14px;fotoo size:13px;color:#aeb8d6}
+h2{fotoo size:14px;letter-spacing:.12em;text-transform:uppercase;color:#5b6573;margin:26px 0 12px}
 .shot{width:100%;border:1px solid #e4e4e7;border-radius:12px;box-shadow:0 14px 40px rgba(0,0,0,.12)}
-.ph{height:300px;display:grid;place-items:center;border-radius:12px;background:linear-gradient(135deg,#35e8ff,#8b6cff);color:#04060f;font-size:34px;font-weight:800}
+.ph{height:300px;display:grid;place-items:center;border-radius:12px;background:linear-gradient(135deg,#35e8ff,#8b6cff);color:#04060f;fotoo size:34px;fotoo weight:800}
 .split{display:flex;gap:24px;align-items:flex-start}
 .mobcol{flex:0 0 260px}.mob{width:260px;border:1px solid #e4e4e7;border-radius:22px;box-shadow:0 14px 40px rgba(0,0,0,.12)}
-.info{flex:1}.info dl{display:grid;grid-template-columns:120px 1fr;gap:8px 12px;font-size:14px}
+.info{flex:1}.info dl{display:grid;grid-template-columns:120px 1fr;gap:8px 12px;fotoo size:14px}
 .info dt{color:#5b6573}.info dd{color:#14181f;word-break:break-all}
 .qr{width:120px;height:120px;margin-top:14px}
-.notes{border:1px solid #e4e4e7;border-radius:12px;padding:18px 20px;background:#f6f7f9;font-size:14px;color:#3a4452}
-.brand{margin-top:26px;font-size:12px;color:#a1a1aa;text-align:center}</style></head>
+.notes{border:1px solid #e4e4e7;border-radius:12px;padding:18px 20px;background:#f6f7f9;fotoo size:14px;color:#3a4452}
+.brand{margin-top:26px;fotoo size:12px;color:#a1a1aa;text-align:center}</style></head>
 <body>
 <div class="hero"><div class="tag">Project handoff</div><h1>$TITLE</h1>
 <a href="$URL">$URL</a><div class="meta">Prepared $DATE · live preview below (desktop &amp; mobile)</div></div>
@@ -1364,8 +1364,8 @@ h2{font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:#5b6573;ma
 <div class="notes">
   <p><strong>Stack &amp; structure:</strong> [fill: HTML/CSS/JS or Vite/Next, key folders].</p>
   <p><strong>Design system:</strong> see <code>DESIGN.md</code> in the repo for tokens, type, components.</p>
-  <p><strong>Deploy:</strong> <code>nt-push &lt;dir&gt; &lt;client&gt;</code> (Cloudflare) · also Vercel/AWS.</p>
-  <p><strong>To do before launch:</strong> [replace placeholders, add real copy/images, run <code>nt-test</code>].</p>
+  <p><strong>Deploy:</strong> <code>too push &lt;dir&gt; &lt;client&gt;</code> (Cloudflare) · also Vercel/AWS.</p>
+  <p><strong>To do before launch:</strong> [replace placeholders, add real copy/images, run <code>too test</code>].</p>
 </div>
 <div class="brand">prepared with <strong>TooFast</strong></div>
 </body></html>
@@ -1373,7 +1373,7 @@ HTML
     ok "Created ${BOLD}$HTML${NC}"
     if [ -n "$CHROME" ]; then
       ABS="file://$(cd "$(dirname "$HTML")"&&pwd)/$(basename "$HTML")"
-      "$CHROME" --headless=new --disable-gpu --no-pdf-header-footer --print-to-pdf="$PDF" "$ABS" >/dev/null 2>&1
+      "$CHROME" --headless=new --disable-gpu --no-pdf-header-footer --pritoo to-pdf="$PDF" "$ABS" >/dev/null 2>&1
       [ -s "$PDF" ] && ok "Created ${BOLD}$PDF${NC} — one file for the client/team ($(human_size "$(wc -c < "$PDF")"))"
     else warn "Install Chrome/Chromium to export a PDF and screenshots. For now open $HTML and print to PDF."; fi
     have open && open "$HTML" 2>/dev/null
@@ -1392,7 +1392,7 @@ HTML
     have python3 || { err "python3 required"; exit 1; }
     HOST=localhost
     if grep -qE "^[^#]*[[:space:]]nt\.local([[:space:]]|$)" /etc/hosts 2>/dev/null; then HOST=nt.local
-    else warn "💡 Tip: open it at nt.local with  ${BLUE}nt-gui dns${NC}${YELLOW} (one-time setup)"; fi
+    else warn "💡 Tip: open it at nt.local with  ${BLUE}too gui dns${NC}${YELLOW} (one-time setup)"; fi
     URL="http://$HOST:$PORT"
     info "🪟 GUI → ${BOLD}$URL${NC}${BLUE}  (Ctrl-C to stop)${NC}"
     have open && (sleep 1; open "$URL") &
@@ -1426,7 +1426,7 @@ HTML
         H=$(curl -sSIL --max-time 20 "$A" 2>/dev/null)
         echo -e "   ${DIM}$(printf '%s' "$H" | grep -i '^HTTP' | tail -1)${NC}"
         [[ "$A" == https://* ]] && P "HTTPS" || W "not served over HTTPS"
-        for hd in "content-security-policy:Content-Security-Policy" "x-content-type-options:X-Content-Type-Options" "strict-transport-security:HSTS" "x-frame-options:X-Frame-Options" "referrer-policy:Referrer-Policy"; do
+        for hd in "contetoo security-policy:Contetoo Security-Policy" "x-contetoo type-options:X-Contetoo Type-Options" "strict-transport-security:HSTS" "x-frame-options:X-Frame-Options" "referrer-policy:Referrer-Policy"; do
           k="${hd%%:*}"; lbl="${hd##*:}"
           printf '%s' "$H" | grep -qi "^$k:" && P "$lbl" || W "missing security header: $lbl"
         done
@@ -1446,7 +1446,7 @@ HTML
         mc=$(grep -rlE "(src|href)=[\"']http://" "$DIR" --include='*.html' --include='*.css' 2>/dev/null | grep -c .)
         [ "${mc:-0}" = 0 ] && P "no http:// (mixed content) refs" || W "$mc file(s) with insecure http:// refs"
         big=$(find "$DIR" -type f \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' \) -size +200k 2>/dev/null | grep -c .)
-        [ "${big:-0}" = 0 ] && P "no heavy raster images" || W "$big heavy image(s) — run nt-images"
+        [ "${big:-0}" = 0 ] && P "no heavy raster images" || W "$big heavy image(s) — run too images"
         find "$DIR" -name '.env*' ! -name '.env.example' -not -path '*/node_modules/*' 2>/dev/null | grep -q . && W ".env present — keep secrets out of the deploy folder" || P "no .env in folder"
         ph=$(grep -rlE 'picsum\.photos|\[placeholder\]|hello@example\.com|Placeholder — replace|TEMPLATE — not legal' "$DIR" --include='*.html' 2>/dev/null | grep -c .)
         [ "${ph:-0}" = 0 ] && P "no leftover placeholders" || W "$ph file(s) with placeholders/templates to finish"
@@ -1456,7 +1456,7 @@ HTML
     [ "$warnc" = 0 ] && ok "Looks production-ready." || warn "Review the ▲ items before going live."
     ;;
 
-  # ───── MULTI-PROVIDER DEPLOY (Cloudflare stays the default via nt-push) ─────
+  # ───── MULTI-PROVIDER DEPLOY (Cloudflare stays the default via too push) ─────
   vercel)
     have npx || { err "npx required (Node)"; exit 1; }
     DIR="${1:-.}"; PROD=""
@@ -1469,7 +1469,7 @@ HTML
     have aws || { err "AWS CLI required — brew install awscli (then 'aws configure')"; exit 1; }
     DIR="${1:-.}"; BUCKET="${2:-$AWS_BUCKET}"
     [ -d "$DIR" ] || { err "Folder '$DIR' not found"; exit 1; }
-    [ -z "$BUCKET" ] && { err "Usage: nt-aws <dir> <s3-bucket>  (or set AWS_BUCKET)"; exit 1; }
+    [ -z "$BUCKET" ] && { err "Usage: too aws <dir> <s3-bucket>  (or set AWS_BUCKET)"; exit 1; }
     info "☁  Syncing ${BOLD}$DIR${NC}${BLUE} → s3://$BUCKET …${NC}"
     aws s3 sync "$DIR" "s3://$BUCKET" --delete || { err "s3 sync failed"; exit 1; }
     if [ -n "$AWS_CF_DISTRIBUTION" ]; then
@@ -1529,13 +1529,13 @@ PHP
       read -p "Name [anteprima]: " UP; UP=$(sanitize_branch "${UP:-anteprima}"); mkdir -p "$CONFIG_DIR"; echo "NT_PROJECT=$UP" > "$CONFIG_FILE"; PROJECT="$UP"; ok "Saved to $CONFIG_FILE"; echo ""; fi
     info "🔧 Cloudflare login…"; wrangler login
     info "🔧 Creating project '$PROJECT'…"; wrangler pages project create "$PROJECT" --production-branch=main 2>/dev/null || warn "ℹ️  '$PROJECT' already exists, reusing it"
-    echo ""; ok "Ready!"; echo -e "   ${BLUE}nt-push ./dist${NC} → https://$PROJECT.pages.dev"; echo -e "   ${BLUE}nt-ship${NC}        → build + deploy + QR + open"
+    echo ""; ok "Ready!"; echo -e "   ${BLUE}too push ./dist${NC} → https://$PROJECT.pages.dev"; echo -e "   ${BLUE}too ship${NC}        → build + deploy + QR + open"
     check_for_updates
     ;;
   config)
     info "⚙️  Configuration:"; echo "  Project:     $PROJECT  [$NT_SOURCE]"; echo "  Base URL:    https://$PROJECT.pages.dev"
     echo "  Snapshots:   $SNAP_ROOT/$PROJECT  (keep last $SNAP_KEEP)"; echo "  Auto-update: ${NT_AUTO_UPDATE:-0}"
-    echo -e "  ${DIM}Global: nt-init  ·  per-repo: a .ntdeploy file with NT_PROJECT=name${NC}"
+    echo -e "  ${DIM}Global: too init  ·  per-repo: a .ntdeploy file with NT_PROJECT=name${NC}"
     ;;
   version|--version|-v) echo "toofast v$VERSION ${DIM}(formerly nt-deploy)${NC}" ;;
   update) self_update ;;
@@ -1544,56 +1544,56 @@ PHP
     banner
     cat <<EOF
 ${BOLD}DEPLOY${NC}
-  nt-push [dir] [client]     Deploy a folder (default ./dist → production)
-  nt-push --build [client]   Build (npm/pnpm/yarn/bun) + deploy automatically
-  nt-push … --dry-run / -y   Simulate / skip production confirmation
-  nt-ship [client]           ${MAGENTA}★${NC} build + deploy + QR + open, all in one
-  nt-bp [client]             Shortcut for 'nt-push --build'
-  nt-vercel [dir] [--prod]   Deploy to Vercel  ·  nt-aws <dir> <bucket>  Deploy to AWS S3/CloudFront
-  nt-wordpress <dir> [name]  Export a static site as an installable WordPress theme (.zip)
+  too push [dir] [client]     Deploy a folder (default ./dist → production)
+  too push --build [client]   Build (npm/pnpm/yarn/bun) + deploy automatically
+  too push … --dry-run / -y   Simulate / skip production confirmation
+  too ship [client]           ${MAGENTA}★${NC} build + deploy + QR + open, all in one
+  too bp [client]             Shortcut for 'too push --build'
+  too vercel [dir] [--prod]   Deploy to Vercel  ·  too aws <dir> <bucket>  Deploy to AWS S3/CloudFront
+  too wordpress <dir> [name]  Export a static site as an installable WordPress theme (.zip)
 
 ${BOLD}TIME MACHINE${NC} ${MAGENTA}(kill feature)${NC}
-  nt-rollback [client] [ts]  Restore a previous deploy (impossible with wrangler alone!)
-  nt-snapshots [client]      List local snapshots
+  too rollback [client] [ts]  Restore a previous deploy (impossible with wrangler alone!)
+  too snapshots [client]      List local snapshots
 
 ${BOLD}MANAGE${NC}
-  nt-list / nt-clients / nt-projects   Deployments, clients, projects
-  nt-rm <client> [-y]        Delete a client's deployments (asks to confirm)
-  nt-rmproject <name>        Delete a whole project (retype name to confirm)
-  nt-logs [client]           Live log tail
-  nt-open / nt-copy [client]  Open / copy the URL
+  too list / too clients / too projects   Deployments, clients, projects
+  too rm <client> [-y]        Delete a client's deployments (asks to confirm)
+  too rmproject <name>        Delete a whole project (retype name to confirm)
+  too logs [client]           Live log tail
+  too open / too copy [client]  Open / copy the URL
 
 ${BOLD}QUALITY & TRAFFIC${NC}
-  nt-audit [url|client] [mobile|desktop]   PageSpeed pre-test with score (Google engine)
-  nt-test [dir|url]                        QA / pre-production check (headers, alts, mixed content, placeholders)
-  nt-analytics inject <dir> <token>        Enable visit tracking (Web Analytics)
-  nt-analytics open | nt-stats             Open dashboard / show visits
+  too audit [url|client] [mobile|desktop]   PageSpeed pre-test with score (Google engine)
+  too test [dir|url]                        QA / pre-production check (headers, alts, mixed content, placeholders)
+  too analytics inject <dir> <token>        Enable visit tracking (Web Analytics)
+  too analytics open | too stats             Open dashboard / show visits
 
 ${BOLD}TOOLKIT${NC} ${DIM}(works without Cloudflare too)${NC}
-  nt-serve [dir] [port]      Local static server
-  nt-edit [dir] [port]       Live dev server + in-browser text editor (auto-reload on save)
-  nt-create [client]         Premium scaffold (DESIGN.md, AGENTS.md, _headers, manifest…) tuned for top PageSpeed
-  nt-create-saas [name]      Full SaaS scaffold (next-forge / Vite) + business plan PDF + killer feature
-  nt-design list|add <brand> Fetch a brand DESIGN.md from the community library (Stripe, Linear, Notion…)
-  nt-new [name]              Minimal starter site, ready to deploy
-  nt-build                   Run the build and show its size
-  nt-size [dir]              Output weight report + top files
-  nt-zip [dir] [out.zip]     Package a folder
-  nt-images [dir] [quality]  Convert PNG/JPEG/GIF → WebP and rewrite references in HTML/CSS/JS
-  nt-check [url|client]      Health-check: HTTP status, time, size
-  nt-qr [url|client]         QR code in the terminal
-  nt-clean                   Remove dist/build/cache
-  nt-doctor                  Environment diagnostics
-  nt-assets [dir]            Scan for existing brand assets (logos, images, fonts, colors)
-  nt-notes <client> ["…"]    Per-client notes (view/add)
-  nt-card [url|client]       ${MAGENTA}🧪 beta${NC} — a shareable one-pager (HTML + PDF) to send a client
-  nt-gui [port]              Lightweight browser GUI
+  too serve [dir] [port]      Local static server
+  too edit [dir] [port]       Live dev server + in-browser text editor (auto-reload on save)
+  too create [client]         Premium scaffold (DESIGN.md, AGENTS.md, _headers, manifest…) tuned for top PageSpeed
+  too create-saas [name]      Full SaaS scaffold (next-forge / Vite) + business plan PDF + killer feature
+  too design list|add <brand> Fetch a brand DESIGN.md from the community library (Stripe, Linear, Notion…)
+  too new [name]              Minimal starter site, ready to deploy
+  too build                   Run the build and show its size
+  too size [dir]              Output weight report + top files
+  too zip [dir] [out.zip]     Package a folder
+  too images [dir] [quality]  Convert PNG/JPEG/GIF → WebP and rewrite references in HTML/CSS/JS
+  too check [url|client]      Health-check: HTTP status, time, size
+  too qr [url|client]         QR code in the terminal
+  too clean                   Remove dist/build/cache
+  too doctor                  Environment diagnostics
+  too assets [dir]            Scan for existing brand assets (logos, images, fonts, colors)
+  too notes <client> ["…"]    Per-client notes (view/add)
+  too card [url|client]       ${MAGENTA}🧪 beta${NC} — a shareable one-pager (HTML + PDF) to send a client
+  too gui [port]              Lightweight browser GUI
 
 ${BOLD}SETUP${NC}
-  nt-init · nt-config · nt-update · nt-version
+  too init · too config · too update · too version
 
 ${DIM}Tip: 'nt <command>' (e.g. nt ship) · project: -p <name> · auto-update: NT_AUTO_UPDATE=1${NC}
 EOF
     ;;
-  *) err "Unknown command: $ACTION"; echo "Run 'nt-help' for the list"; exit 1 ;;
+  *) err "Unknown command: $ACTION"; echo "Run 'too help' for the list"; exit 1 ;;
 esac
