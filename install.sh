@@ -58,6 +58,19 @@ else
 fi
 [ -f "$INSTALL_DIR/nt-gui.py" ] && echo -e "${GREEN}✓${NC} GUI installata in $INSTALL_DIR/nt-gui.py"
 
+# 3c. Registra la skill per Claude Code (se presente ~/.claude)
+if [ -d "$HOME/.claude" ]; then
+  SKILL_DIR="$HOME/.claude/skills/nt-deploy"
+  mkdir -p "$SKILL_DIR"
+  if [ -f "./integrations/claude-code/skill/SKILL.md" ]; then
+    cp ./integrations/claude-code/skill/SKILL.md "$SKILL_DIR/SKILL.md"
+  else
+    REPO_URL="${NT_REPO_URL:-https://raw.githubusercontent.com/nico33t/nt-deploy/main}"
+    curl -fsSL "$REPO_URL/integrations/claude-code/skill/SKILL.md" -o "$SKILL_DIR/SKILL.md" 2>/dev/null || true
+  fi
+  [ -f "$SKILL_DIR/SKILL.md" ] && echo -e "${GREEN}✓${NC} Skill Claude Code registrata in $SKILL_DIR"
+fi
+
 # 4. Determina shell rc file
 SHELL_RC=""
 if [ -n "$ZSH_VERSION" ] || [ "$(basename "$SHELL")" = "zsh" ]; then
