@@ -78,16 +78,29 @@ Match style to audience and goal, never to fashion.
 - **Speed converts**: every second of load loses conversions — WebP, no render-blocking fonts, defer JS.
 - Accessibility = more customers: contrast ≥ 4.5:1, visible focus, captions/poster on video.
 
-## Make each site unique (don't ship the default template)
-- `too create` is a STARTING scaffold, not the final site. Reason like a senior UI/UX designer and
-  rebuild it for THIS brand: colors, type, hero style, sections, copy and imagery.
-- **Colors come from DESIGN.md** — run `too apply-design <dir>` (or `--design=<brand>` at create) so
-  the palette matches the brand; theme follows the brand's BACKGROUND (light unless the bg is dark).
-- **If the client already has a website**, inspect it first (`too check`/`too audit` + look at it) and
-  carry over real brand colors, logo, tone and structure.
-- **Animations**: purposeful and subtle — staggered reveal on scroll, gentle hover/press states,
-  smooth focus; 120–220ms, eased; honor `prefers-reduced-motion`. Never decorative noise.
-- Vary structure to fit the business — section order, hero type, density — so no two sites look the same.
+## Honor the brand DESIGN.md — DESIGN it, don't just recolor
+`too create` is ONLY a scaffold + a shallow color swap. To deliver a faithful brand site you (the
+agent) must READ THE WHOLE DESIGN.md and translate EVERY token into the code — then rewrite
+`styles.css` and rebuild the structure:
+- **Colors** — bg/surface/fg/muted/border/primary/accent + semantic; set all CSS variables (verify contrast).
+- **Shape** — apply the brand's border-radius scale (sharp/0, subtle, or pill). Don't leave the default 14px if the brand is sharp/square.
+- **Typography** — use the brand's font families, weights, scale and line-height; add the web font (`preconnect` + `<link ... display=swap>`) when it's not a system font.
+- **Elevation** — match the shadow/depth style (flat, soft, or pronounced).
+- **Spacing & density** — follow the brand's spacing rhythm.
+- **Motion feel** — read whether the brand is smooth/refined (eased, 180–260ms) or sharp/raw/brutalist (snappy 80–120ms or instant); set durations/easing to match. Honor `prefers-reduced-motion`.
+- **Structure** — change section order, hero type and density to fit the brand and business. Never ship the recolored default template.
+
+## Logo
+- Source it from the client's assets (`too assets .`) or their existing site. If none, ASK the client for the logo.
+- **Never fabricate or scrape a trademarked logo.** Use a clean text wordmark as a placeholder until you have the real one.
+
+## Mobile nav / hamburger
+- Use a modern **slide-in drawer** (from the side) with an overlay and a smooth open/close; animate the icon to an ✕.
+- Decide by brand whether the drawer repeats the **primary CTA** (yes for lead-gen / booking / sales; optional for editorial / minimal).
+- Match the drawer's motion to the brand's feel (smooth vs sharp). Trap focus, close on Esc / overlay click, respect reduced-motion.
+
+## Existing site
+- If the client already has a website, inspect it first (`too check` / `too audit` + look at it) and carry over the real brand colors, logo, tone and structure.
 
 ## SaaS rule (`too create-saas`)
 When building a SaaS, treat these as the PRIMARY points and call them out:
