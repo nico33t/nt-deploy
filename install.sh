@@ -49,6 +49,15 @@ fi
 chmod +x "$SCRIPT_PATH"
 echo -e "${GREEN}✓${NC} Script installato in $SCRIPT_PATH"
 
+# 3b. Copia la GUI (best-effort)
+if [ -f "./scripts/nt-gui.py" ]; then
+  cp ./scripts/nt-gui.py "$INSTALL_DIR/nt-gui.py"
+else
+  REPO_URL="${NT_REPO_URL:-https://raw.githubusercontent.com/nico33t/nt-deploy/main}"
+  curl -fsSL "$REPO_URL/scripts/nt-gui.py" -o "$INSTALL_DIR/nt-gui.py" 2>/dev/null || true
+fi
+[ -f "$INSTALL_DIR/nt-gui.py" ] && echo -e "${GREEN}✓${NC} GUI installata in $INSTALL_DIR/nt-gui.py"
+
 # 4. Determina shell rc file
 SHELL_RC=""
 if [ -n "$ZSH_VERSION" ] || [ "$(basename "$SHELL")" = "zsh" ]; then
@@ -64,17 +73,47 @@ else
 fi
 
 # 5. Aggiungi alias se non già presenti
+NT="~/.nt-tools/nt-deploy.sh"
 ALIAS_BLOCK="# >>> nt-deploy >>>
-alias nt-init='~/.nt-tools/nt-deploy.sh init'
-alias nt-push='~/.nt-tools/nt-deploy.sh push'
-alias nt-list='~/.nt-tools/nt-deploy.sh list'
-alias nt-clients='~/.nt-tools/nt-deploy.sh clients'
-alias nt-open='~/.nt-tools/nt-deploy.sh open'
-alias nt-copy='~/.nt-tools/nt-deploy.sh copy'
-alias nt-config='~/.nt-tools/nt-deploy.sh config'
-alias nt-update='~/.nt-tools/nt-deploy.sh update'
-alias nt-version='~/.nt-tools/nt-deploy.sh version'
-alias nt-help='~/.nt-tools/nt-deploy.sh help'
+alias nt='$NT'
+# deploy
+alias nt-push='$NT push'
+alias nt-ship='$NT ship'
+alias nt-bp='$NT bp'
+# time machine
+alias nt-rollback='$NT rollback'
+alias nt-snapshots='$NT snapshots'
+# gestione
+alias nt-list='$NT list'
+alias nt-clients='$NT clients'
+alias nt-projects='$NT projects'
+alias nt-rm='$NT rm'
+alias nt-rmproject='$NT rmproject'
+alias nt-logs='$NT logs'
+alias nt-open='$NT open'
+alias nt-copy='$NT copy'
+# qualità & traffico
+alias nt-audit='$NT audit'
+alias nt-analytics='$NT analytics'
+alias nt-stats='$NT analytics stats'
+# toolkit
+alias nt-serve='$NT serve'
+alias nt-new='$NT new'
+alias nt-build='$NT build'
+alias nt-size='$NT size'
+alias nt-zip='$NT zip'
+alias nt-check='$NT check'
+alias nt-qr='$NT qr'
+alias nt-clean='$NT clean'
+alias nt-doctor='$NT doctor'
+alias nt-notes='$NT notes'
+alias nt-gui='$NT gui'
+# setup
+alias nt-init='$NT init'
+alias nt-config='$NT config'
+alias nt-update='$NT update'
+alias nt-version='$NT version'
+alias nt-help='$NT help'
 # <<< nt-deploy <<<"
 
 if grep -q ">>> nt-deploy >>>" "$SHELL_RC" 2>/dev/null; then

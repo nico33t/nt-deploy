@@ -19,3 +19,6 @@ node_modules/
 
 # Claude Code local settings (path personali, non condividere)
 .claude/settings.local.json
+
+.wrangler/
+site/.wrangler/

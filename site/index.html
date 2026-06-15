@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>nt-deploy — ship your site in one command</title>
+<meta name="description" content="nt-deploy: deploy to Cloudflare Pages in one command, instant rollback, PageSpeed audits, a light GUI and a full developer toolkit. Open source." />
+<meta name="theme-color" content="#04060f" />
+<meta property="og:title" content="nt-deploy — ship your site in one command" />
+<meta property="og:description" content="Deploy, instant rollback, PageSpeed audits and a dev toolkit. All from your terminal." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=DM+Mono:wght@400;500&family=Sora:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%2304060f'/%3E%3Ctext x='50' y='70' font-size='58' text-anchor='middle'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E" />
+</head>
+<body>
+<div class="grid-bg" aria-hidden="true"></div>
+<div class="glow" aria-hidden="true"></div>
+
+<header class="nav">
+  <div class="brand"><span class="brand__bolt">⚡</span> nt-deploy</div>
+  <nav class="nav__links">
+    <a href="#features">Features</a>
+    <a href="#kill">Time Machine</a>
+    <a href="#install">Install</a>
+    <a class="nav__gh" href="https://github.com/nico33t/nt-deploy" target="_blank" rel="noopener">GitHub ↗</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="badge">v2.0 · open source · zero dependencies</div>
+    <h1>Ship your site in <span class="grad">one command</span>.</h1>
+    <p class="lede">Deploy to Cloudflare Pages, <b>instant rollback</b>, PageSpeed audits,
+       a light GUI and a complete dev toolkit. All from your terminal — featherweight.</p>
+
+    <div class="terminal" role="img" aria-label="Terminal example">
+      <div class="terminal__bar"><span></span><span></span><span></span><em>zsh — nt-deploy</em></div>
+      <pre class="terminal__body"><span class="c-dim">$</span> <span class="c-cy">nt-ship</span> client
+<span class="c-dim">🔨 Building with pnpm…  📦 Output: dist  🚀 Deploy → client</span>
+<span class="c-gr">✅ Live: https://client.yourproject.pages.dev</span>
+<span class="c-dim">📸 snapshot saved (rollback available)</span>
+<span class="c-dim">$</span> <span class="c-cy">nt-rollback</span> client   <span class="c-dim"># ⏪ back to the previous deploy</span>
+<span class="c-dim">$</span> <span class="c-cy">nt-audit</span> client      <span class="c-dim"># 🔬 real PageSpeed score</span></pre>
+    </div>
+
+    <div class="cta">
+      <button class="copy" data-cmd="curl -fsSL https://raw.githubusercontent.com/nico33t/nt-deploy/main/install.sh | bash">
+        <code>curl -fsSL …/install.sh | bash</code><span class="copy__ico">⧉</span>
+      </button>
+      <a class="ghost" href="https://github.com/nico33t/nt-deploy" target="_blank" rel="noopener">View on GitHub</a>
+    </div>
+  </section>
+
+  <section class="stats">
+    <div><b>30+</b><span>commands</span></div>
+    <div><b>1</b><span>dependency (wrangler)</span></div>
+    <div><b>~0</b><span>idle RAM</span></div>
+    <div><b>∞</b><span>local rollbacks</span></div>
+  </section>
+
+  <section id="features" class="features">
+    <h2>A Swiss army knife for the web</h2>
+    <div class="cards">
+      <article class="card"><div class="card__ico">🚀</div><h3>Deploy in one command</h3><p>Static folder or automatic build (npm/pnpm/yarn/bun). One branch per client, a URL ready to share.</p></article>
+      <article class="card card--hot"><div class="card__ico">⏪</div><h3>Time Machine</h3><p>Every deploy is archived locally. <b>Real rollback</b> to a previous version — something wrangler alone cannot do.</p></article>
+      <article class="card"><div class="card__ico">🔬</div><h3>PageSpeed audit</h3><p>Pre-test with a real score (Google Lighthouse engine): Performance, SEO, Accessibility and Core Web Vitals.</p></article>
+      <article class="card"><div class="card__ico">🪟</div><h3>Featherweight GUI</h3><p>A browser panel at <code>nt.local</code> to manage clients, projects, snapshots and settings. No Electron — pure stdlib.</p></article>
+      <article class="card"><div class="card__ico">📊</div><h3>Traffic &amp; visits</h3><p>Enable Web Analytics with one command and read your site's visit stats.</p></article>
+      <article class="card"><div class="card__ico">🧰</div><h3>Offline toolkit</h3><p>Local server, scaffold, size report, zip, QR codes, health-check, client notes. Useful even without Cloudflare.</p></article>
+    </div>
+  </section>
+
+  <section id="kill" class="kill">
+    <div class="kill__txt">
+      <div class="badge badge--hot">★ kill feature</div>
+      <h2>Rollback wrangler doesn't have</h2>
+      <p>Cloudflare offers no CLI rollback for Pages. nt-deploy archives every push locally and lets you <b>restore any version</b> in seconds.</p>
+      <ul>
+        <li><code>nt-snapshots client</code> — the deploy history</li>
+        <li><code>nt-rollback client</code> — back to the previous one</li>
+        <li><code>nt-rollback client 1700000000</code> — to an exact version</li>
+      </ul>
+    </div>
+    <pre class="kill__term"><span class="c-cy">$ nt-snapshots</span> client
+  1719500000  2026-06-15 11:40  18K  <span class="c-gr">(current)</span>
+  1719490000  2026-06-15 10:02  18K  <span class="c-am">(rollback →)</span>
+  1719400000  2026-06-14 22:15  17K
+<span class="c-cy">$ nt-rollback</span> client
+  ⏪ Rolling back to snapshot from 2026-06-15 10:02
+  <span class="c-gr">✅ Rollback complete</span></pre>
+  </section>
+
+  <section id="install" class="install">
+    <h2>Install in 10 seconds</h2>
+    <p class="lede">Only needs Node (for wrangler). The script auto-updates.</p>
+    <button class="copy copy--big" data-cmd="curl -fsSL https://raw.githubusercontent.com/nico33t/nt-deploy/main/install.sh | bash">
+      <code>curl -fsSL https://raw.githubusercontent.com/nico33t/nt-deploy/main/install.sh | bash</code><span class="copy__ico">⧉</span>
+    </button>
+    <div class="next"><span><code>nt-init</code> login + project</span><span><code>nt-ship</code> build, deploy, done</span><span><code>nt-help</code> every command</span></div>
+  </section>
+</main>
+
+<footer class="foot">
+  <span><span class="brand__bolt">⚡</span> nt-deploy</span>
+  <span class="foot__dim">deploy · rollback · audit · gui — open source</span>
+  <a href="https://github.com/nico33t/nt-deploy" target="_blank" rel="noopener">github.com/nico33t/nt-deploy</a>
+</footer>
+
+<div class="toast" id="toast">copied ✓</div>
+<script src="app.js"></script>
+</body>
+</html>

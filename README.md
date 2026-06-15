@@ -1,205 +1,96 @@
-# 🔪 nt-deploy
+<div align="center">
 
-**🇮🇹 Italiano** · [🇬🇧 English](README.en.md)
+# ⚡ nt-deploy
 
-Coltellino svizzero da terminale per pubblicare anteprime statiche su **Cloudflare Pages** con un comando. Ogni cliente prende il suo sottodominio dinamico, senza configurare hosting, DNS, o repo Git.
+### Ship your site in **one command** — and a lot more.
 
-```bash
-nt-push ./dist mario-rossi
-# ✅ Online: https://mario-rossi.studio-acme.pages.dev
-```
+Deploy to Cloudflare Pages, **instant rollback**, real PageSpeed audits, a featherweight GUI,
+and a complete developer toolkit. All from your terminal. Zero dependencies beyond `wrangler`.
 
-> Il dominio base (`studio-acme.pages.dev` qui sopra) lo scegli tu al primo `nt-init`. Ogni utente ha il suo: chi installa nt-deploy decide come si chiama il proprio "spazio anteprime" (es. `nicolatomassini.pages.dev`, `studiorossi.pages.dev`, `progetti.pages.dev`...).
+[![version](https://img.shields.io/badge/version-2.0.0-6d4aff)](https://github.com/nico33t/nt-deploy)
+[![shell](https://img.shields.io/badge/bash-5%2B-1f8a55)](#)
+[![license](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-## ✨ Cosa fa
+</div>
 
-- **Deploy istantaneo** di qualsiasi cartella statica (build di React, Vue, Astro, Next export, HTML puro…)
-- **Sottodomini dinamici per cliente** → ogni cliente ha il suo URL condivisibile
-- **Sostituzione facile** → rilanci il comando, l'anteprima si aggiorna sullo stesso URL
-- **Comandi rapidi** → `nt-copy mario-rossi` per copiare il link da mandare via WhatsApp
-- **Auto-aggiornamento** → ti avvisa quando esce una nuova versione, aggiornamento con `nt-update`
-- **Cross-platform** → macOS, Linux, Windows
-
-## 📋 Requisiti
-
-- [Node.js](https://nodejs.org/) (>= 18)
-- Un account [Cloudflare](https://dash.cloudflare.com/sign-up) (free plan basta)
-
-L'installer si occupa di installare `wrangler` (CLI ufficiale Cloudflare) automaticamente.
-
-## 🚀 Installazione
-
-### macOS / Linux
-
-```bash
-git clone https://github.com/nico33t/nt-deploy.git
-cd nt-deploy
-chmod +x install.sh
-./install.sh
-```
-
-Oppure one-liner:
+---
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/nico33t/nt-deploy/main/install.sh | bash
 ```
 
-### Windows (PowerShell)
-
-```powershell
-git clone https://github.com/nico33t/nt-deploy.git
-cd nt-deploy
-.\install.ps1
+```bash
+nt-init            # log in to Cloudflare + create a project
+nt-ship client     # build + deploy + QR + open, all in one
+nt-rollback client # ⏪ instantly restore the previous deploy
 ```
 
-Oppure one-liner:
+## Why nt-deploy
 
-```powershell
-irm https://raw.githubusercontent.com/nico33t/nt-deploy/main/install.ps1 | iex
-```
+`wrangler` deploys. nt-deploy gives you the **whole workflow** around it: client branches,
+build pipelines, quality audits, traffic, a GUI, and the one thing wrangler can't do —
+**rollback**.
 
-> Se PowerShell blocca lo script:
-> ```powershell
-> Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
-> ```
+## ★ Kill feature — Time Machine
 
-## 🎯 Primo utilizzo
+Cloudflare has **no CLI rollback** for Pages. nt-deploy archives every deploy locally,
+so you can restore any previous version in seconds.
 
 ```bash
-# 1. Riapri il terminale (o ricarica la shell)
-source ~/.zshrc        # macOS/Linux
-. $PROFILE             # Windows PowerShell
-
-# 2. Login Cloudflare + crea il TUO progetto
-nt-init
-# → ti chiede il nome (es. "nicolatomassini")
-# → diventa: nicolatomassini.pages.dev
-
-# 3. Pubblica la prima anteprima
-nt-push ./dist mario-rossi
-# → mario-rossi.nicolatomassini.pages.dev
+nt-snapshots client          # see the deploy history
+nt-rollback  client          # back to the previous version
+nt-rollback  client 17000000 # roll back to an exact snapshot
 ```
 
-## 📖 Comandi
+## Features
 
-| Comando | Descrizione |
-|---------|-------------|
-| `nt-init` | Login Cloudflare + scelta nome progetto + creazione |
-| `nt-push [cartella] [cliente]` | Deploy cartella su branch cliente |
-| `nt-list` | Mostra tutti i deploy |
-| `nt-clients` | Lista clienti attivi |
-| `nt-open [cliente]` | Apri URL nel browser |
-| `nt-copy [cliente]` | Copia URL nella clipboard |
-| `nt-config` | Mostra configurazione corrente |
-| `nt-update` | Aggiorna nt-deploy all'ultima versione GitHub |
-| `nt-version` | Mostra versione installata |
-| `nt-help` | Aiuto |
+| | |
+|---|---|
+| 🚀 **Deploy** | `nt-push [dir] [client]` · static folder or auto build (`--build`, detects npm/pnpm/yarn/bun) |
+| ⏪ **Time Machine** | local snapshots + true `nt-rollback` |
+| 🔬 **PageSpeed audit** | `nt-audit` — real score via Google Lighthouse engine (same as pagespeed.web.dev) |
+| 🪟 **GUI** | `nt-gui` — light browser console (shadcn-style), manage clients/projects/settings, served at `nt.local` |
+| 📊 **Traffic** | `nt-analytics inject` to enable Web Analytics, `nt-stats` to read visits |
+| 🧰 **Toolkit** | `nt-serve`, `nt-new`, `nt-build`, `nt-size`, `nt-zip`, `nt-check`, `nt-qr`, `nt-clean`, `nt-doctor`, `nt-notes` |
+| 🛡 **Safe** | exit-code aware, production overwrite confirmation, `--dry-run` |
+| 🔄 **Self-updating** | daily check + `nt-update` (or `NT_AUTO_UPDATE=1`) |
 
-## 💡 Esempi
+## Commands
+
+```
+DEPLOY        nt-push · nt-ship · nt-bp
+TIME MACHINE  nt-rollback · nt-snapshots
+MANAGE        nt-list · nt-clients · nt-projects · nt-rm · nt-rmproject · nt-logs · nt-open · nt-copy
+QUALITY       nt-audit · nt-analytics · nt-stats
+TOOLKIT       nt-serve · nt-new · nt-build · nt-size · nt-zip · nt-check · nt-qr · nt-clean · nt-doctor · nt-notes · nt-gui
+SETUP         nt-init · nt-config · nt-update · nt-version
+```
+
+Run `nt-help` for the full reference. You can also use a single entrypoint: `nt <command>`.
+
+## Multiple projects
 
 ```bash
-# Deploy production (URL principale)
-nt-push ./dist
-# → tuoprogetto.pages.dev
-
-# Deploy preview cliente
-nt-push ./build mario-rossi
-# → mario-rossi.tuoprogetto.pages.dev
-
-# Nomi con spazi → sanitizzati automaticamente
-nt-push ./dist "Hotel Roma Centrale"
-# → hotel-roma-centrale.tuoprogetto.pages.dev
-
-# Aggiorna anteprima esistente (sovrascrive)
-nt-push ./dist mario-rossi
-
-# Copia link per il cliente
-nt-copy mario-rossi
-# → URL nella clipboard, pronto da incollare
-
-# Apri al volo nel browser
-nt-open hotel-roma-centrale
+nt-push ./dist client -p other-project    # target any project, one-off
+echo 'NT_PROJECT=my-project' > .ntdeploy   # or pin a project per repo
 ```
 
-## ⚙️ Configurazione
-
-Al primo `nt-init` ti viene chiesto il nome del **tuo** progetto Cloudflare Pages. La scelta viene salvata in `~/.nt-tools/config` e usata per sempre.
-
-```
-Nome progetto [anteprima]: nicolatomassini
-✓ Salvato in /Users/tuo-nome/.nt-tools/config
-```
-
-Da quel momento i deploy escono come:
-- `https://nicolatomassini.pages.dev` (production)
-- `https://mario-rossi.nicolatomassini.pages.dev` (cliente)
-
-**Per cambiarlo** in seguito: rilancia `nt-init` e rispondi `s` alla domanda "Vuoi cambiarlo?".
-
-**Override one-shot** (senza modificare il salvato):
-```bash
-NT_PROJECT=test nt-push ./dist                  # macOS / Linux
-$env:NT_PROJECT="test"; nt-push ./dist          # Windows
-```
-
-## 🔄 Aggiornamenti
-
-Quando lanci `nt-push`, `nt-list`, `nt-clients` o `nt-init`, lo strumento controlla in background (max una volta al giorno, con timeout di 2 secondi) se è uscita una nuova versione. Se sì, ti avvisa così:
-
-```
-💡 Nuova versione disponibile: 1.2.0 (la tua: 1.1.0)
-   Aggiorna con: nt-update
-```
-
-Per aggiornare:
+## The GUI
 
 ```bash
-nt-update
+nt-gui            # opens a light control panel in your browser
+nt-gui dns        # one-time setup to reach it at http://nt.local:7700
 ```
 
-Scarica l'ultima versione dello script da `nico33t/nt-deploy` su GitHub e sostituisce quella locale in `~/.nt-tools/`.
+Light theme, shadcn / next-forge inspired. Manage clients and projects, run audits and checks,
+show QR codes, roll back, and configure your **PageSpeed API key** and **Web Analytics tokens**
+— all from the browser. It binds to `127.0.0.1` only and runs a strict command whitelist.
 
-## 🗑️ Disinstallazione
+## Requirements
 
-**macOS / Linux**:
-```bash
-./uninstall.sh
-```
+- **Node.js** (for `wrangler`, installed automatically if missing)
+- Optional: `jq` (richer output), `qrencode` (terminal QR), `python3` (GUI + local server)
 
-**Windows**:
-```powershell
-.\uninstall.ps1
-```
+## License
 
-## 📁 Struttura del repo
-
-```
-nt-deploy/
-├── install.sh          # Installer macOS/Linux
-├── install.ps1         # Installer Windows
-├── uninstall.sh        # Disinstaller macOS/Linux
-├── uninstall.ps1       # Disinstaller Windows
-├── scripts/
-│   └── nt-deploy.sh    # Script principale
-├── README.md           # 🇮🇹 Italiano
-├── README.en.md        # 🇬🇧 English
-└── LICENSE
-```
-
-## 🤝 Come funziona dietro le quinte
-
-Lo script è un wrapper su [`wrangler pages deploy`](https://developers.cloudflare.com/workers/wrangler/commands/#pages) che:
-
-1. Sanitizza il nome del cliente (lowercase, solo alfanumerico e `-`)
-2. Lo usa come `--branch` di Cloudflare Pages
-3. Cloudflare assegna automaticamente il sottodominio `<branch>.<progetto>.pages.dev`
-
-Niente di più, niente di meno. Tutta la logica sta in `scripts/nt-deploy.sh` (~250 righe leggibili, dipendenza da `bash` + `curl` + `wrangler`).
-
-## 📝 Licenza
-
-[MIT](LICENSE) — fai quello che vuoi.
-
-## 🐛 Problemi?
-
-Apri una [issue](https://github.com/nico33t/nt-deploy/issues).
+MIT © [nico33t](https://github.com/nico33t)
