@@ -874,7 +874,7 @@ SVG
   <header class="nav" id="top">
     <a class="brand" href="#top"><span class="brand__dot"></span> $NAME</a>
     <nav class="nav__links" id="menu" aria-label="Primary">
-      <a href="#features">Features</a><a href="#showcase">Showcase</a><a href="#contact">Contact</a>
+      <a href="#features">Features</a><a href="#how">How</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a><a href="#contact">Contact</a>
     </nav>
     <a class="btn btn--sm" href="#contact">Get in touch</a>
     <button class="nav__toggle" id="navToggle" aria-label="Menu" aria-expanded="false">☰</button>
@@ -917,6 +917,15 @@ SVG
       </div>
     </section>
 
+    <section id="how" class="section">
+      <header class="section__head reveal"><p class="eyebrow">How it works</p><h2>Three steps to live.</h2></header>
+      <div class="steps">
+        <div class="step reveal"><b>01</b><h3>Plan</h3><p>We align on goals, audience and the one job the page must do.</p></div>
+        <div class="step reveal"><b>02</b><h3>Build</h3><p>Design and code in tight loops — you see something real every few days.</p></div>
+        <div class="step reveal"><b>03</b><h3>Ship</h3><p>Audited for speed &amp; accessibility, then deployed in one command.</p></div>
+      </div>
+    </section>
+
     <section id="showcase" class="section section--split">
       <div class="reveal"><p class="eyebrow">Showcase</p><h2>Show your work beautifully.</h2>
         <p class="lede">Swap this illustration for a screenshot or photo. Keep images light —
@@ -930,6 +939,33 @@ SVG
       <div><b>99+</b><span>PageSpeed score</span></div>
       <div><b>0</b><span>tracking cookies</span></div>
       <div><b>&lt;1s</b><span>to first paint</span></div>
+    </section>
+
+    <section id="testimonials" class="section">
+      <header class="section__head reveal"><p class="eyebrow">Testimonials</p><h2>Loved by the people who use it.</h2></header>
+      <div class="quotes">
+        <figure class="quote reveal"><blockquote>"Exactly what we needed — fast, clean, and shipped in days, not months."</blockquote><figcaption>— Replace with a real client quote</figcaption></figure>
+        <figure class="quote reveal"><blockquote>"The handoff was flawless. Everything was documented and easy to take over."</blockquote><figcaption>— Replace with a real client quote</figcaption></figure>
+      </div>
+    </section>
+
+    <section id="pricing" class="section">
+      <header class="section__head reveal"><p class="eyebrow">Pricing</p><h2>Simple, transparent pricing.</h2></header>
+      <div class="pricing">
+        <div class="tier reveal"><h3>Starter</h3><div class="price">€—</div><ul><li>Landing page</li><li>Responsive &amp; accessible</li><li>1 revision</li></ul><a class="btn btn--ghost" href="#contact">Choose</a></div>
+        <div class="tier feat reveal"><h3>Pro</h3><div class="price">€—</div><ul><li>Multi-page site</li><li>SEO + analytics</li><li>3 revisions</li></ul><a class="btn" href="#contact">Choose</a></div>
+        <div class="tier reveal"><h3>Scale</h3><div class="price">€—</div><ul><li>Custom build</li><li>Integrations</li><li>Ongoing support</li></ul><a class="btn btn--ghost" href="#contact">Talk to us</a></div>
+      </div>
+    </section>
+
+    <section id="faq" class="section">
+      <header class="section__head reveal"><p class="eyebrow">FAQ</p><h2>Questions, answered.</h2></header>
+      <div class="faq reveal">
+        <details open><summary>How long does a project take?</summary><p>A focused landing page ships in days; larger sites in a few weeks.</p></details>
+        <details><summary>Do I own the code?</summary><p>Yes — you get the full source and design system, no lock-in.</p></details>
+        <details><summary>Is it fast and accessible?</summary><p>Every build targets PageSpeed ≥ 95 and WCAG-friendly accessibility.</p></details>
+        <details><summary>Can you maintain it after launch?</summary><p>Yes, ongoing support is available on the Scale plan.</p></details>
+      </div>
     </section>
 
     <section id="contact" class="section cta-band reveal">
@@ -999,6 +1035,22 @@ code{font-family:ui-monospace,Menlo,monospace;background:var(--surface);padding:
 .stats b{display:block;font-size:clamp(1.8rem,5vw,2.8rem);background:linear-gradient(120deg,var(--primary),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
 .stats span{color:var(--muted);font-size:.9rem}
 .cta-band{text-align:center}.cta-band .lede{margin:14px auto 26px}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.step{border:1px solid var(--border);border-radius:var(--r);padding:24px;background:#fff}
+.step b{color:var(--primary);font-family:ui-monospace,Menlo,monospace}.step h3{margin:10px 0 6px}.step p{color:var(--muted);font-size:.95rem}
+.quotes{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.quote{border:1px solid var(--border);border-radius:var(--r);padding:24px;background:var(--surface)}
+.quote blockquote{font-size:1.05rem}.quote figcaption{margin-top:14px;color:var(--mfg);font-size:.9rem}
+.pricing{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.tier{border:1px solid var(--border);border-radius:var(--r);padding:28px;background:#fff;display:flex;flex-direction:column}
+.tier.feat{border-color:var(--primary);box-shadow:0 16px 44px rgba(37,99,235,.14)}
+.tier .price{font-size:2rem;font-weight:700;margin:8px 0}
+.tier ul{list-style:none;margin:14px 0;display:flex;flex-direction:column;gap:8px;color:var(--muted);font-size:.95rem}
+.tier .btn{margin-top:auto}
+.faq{max-width:760px}
+.faq details{border-bottom:1px solid var(--border);padding:14px 0}
+.faq summary{cursor:pointer;font-weight:600;list-style:none}.faq summary::-webkit-details-marker{display:none}
+.faq p{color:var(--muted);margin-top:8px}
 .footer{max-width:var(--max);margin:0 auto;padding:30px clamp(16px,5vw,40px) 48px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:16px;align-items:center;color:var(--muted);font-size:14px}
 .footer__brand{display:flex;align-items:center;gap:8px;color:var(--fg);font-weight:700}
 .footer__links{display:flex;gap:18px;margin:0 auto}.footer__links a:hover{color:var(--fg)}
