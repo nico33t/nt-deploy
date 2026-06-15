@@ -1249,47 +1249,74 @@ CSS
 
   # ───── BETA: shareable client card (HTML + PDF) ─────
   card|share)
-    warn "🧪 BETA feature — experimental, may change or be removed. Feedback welcome."
+    warn "🧪 BETA — full handoff card (HTML + PDF) with desktop & mobile screenshots."
     A="${1:-main}"; case "$A" in http*) URL="$A"; NAME="site";; *) NAME="$(sanitize_branch "$A")"; URL=$(url_for "$NAME");; esac
-    TITLE="${2:-$NAME}"; OUT="${NT_CARD_OUT:-nt-card-$NAME}"; HTML="$OUT.html"; PDF="$OUT.pdf"; SHOT="$(mktemp -u).png"
-    CHROME=""
-    for c in "$NT_CHROME" "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" "/Applications/Chromium.app/Contents/MacOS/Chromium" "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser" "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge"; do
-      [ -n "$c" ] && [ -x "$c" ] && { CHROME="$c"; break; }; done
-    [ -z "$CHROME" ] && for c in google-chrome chromium chromium-browser brave-browser; do have "$c" && { CHROME="$(command -v "$c")"; break; }; done
-    IMG_TAG="<div class=\"ph\">$TITLE</div>"
+    TITLE="${2:-$NAME}"; OUT="${NT_CARD_OUT:-nt-card-$NAME}"; HTML="$OUT.html"; PDF="$OUT.pdf"
+    CHROME=$(nt_chrome); DATE="$(date '+%Y-%m-%d')"
+    DESK="<div class=\"ph\">$TITLE</div>"; MOB=""
     if [ -n "$CHROME" ]; then
-      info "📸 Capturing $URL…"
-      "$CHROME" --headless=new --disable-gpu --hide-scrollbars --window-size=1280,820 --screenshot="$SHOT" "$URL" >/dev/null 2>&1
-      if [ -s "$SHOT" ] && have base64; then IMG_TAG="<img class=\"shot\" alt=\"preview\" src=\"data:image/png;base64,$(base64 < "$SHOT" | tr -d '\n')\">"; fi
-      rm -f "$SHOT"
+      info "📸 Capturing desktop (1440) + mobile (390)…"
+      D="$(mktemp -u).png"; M="$(mktemp -u).png"
+      "$CHROME" --headless=new --disable-gpu --hide-scrollbars --force-device-scale-factor=1 --window-size=1440,2200 --screenshot="$D" "$URL" >/dev/null 2>&1
+      "$CHROME" --headless=new --disable-gpu --hide-scrollbars --force-device-scale-factor=2 --window-size=390,2200 --screenshot="$M" "$URL" >/dev/null 2>&1
+      [ -s "$D" ] && have base64 && DESK="<img class=\"shot\" alt=\"desktop preview\" src=\"data:image/png;base64,$(base64 < "$D" | tr -d '\n')\">"
+      [ -s "$M" ] && have base64 && MOB="<img class=\"mob\" alt=\"mobile preview\" src=\"data:image/png;base64,$(base64 < "$M" | tr -d '\n')\">"
+      rm -f "$D" "$M"
     fi
     QR=""; have qrencode && QR=$(qrencode -o - -t SVG -m 1 "$URL" 2>/dev/null)
     cat > "$HTML" <<HTML
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>$TITLE — preview</title>
-<style>@page{size:A4;margin:0}*{margin:0;box-sizing:border-box;font-family:-apple-system,Segoe UI,Roboto,system-ui,sans-serif}
-body{color:#0b1020}.card{width:794px;min-height:1123px;margin:0 auto;background:#fff;display:flex;flex-direction:column}
-.hero{padding:54px 56px;background:linear-gradient(135deg,#0b1020,#1a1740);color:#fff}
-.hero .tag{font-size:13px;letter-spacing:.22em;color:#7fdcff;text-transform:uppercase}
-.hero h1{font-size:46px;margin:10px 0 6px;line-height:1.05}.hero a{color:#c7b9ff;font-size:16px;text-decoration:none}
-.shotwrap{padding:36px 56px;flex:1}.shot{width:100%;border:1px solid #e4e4e7;border-radius:14px;box-shadow:0 18px 50px rgba(0,0,0,.14)}
-.ph{height:360px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(135deg,#35e8ff,#8b6cff);color:#04060f;font-size:40px;font-weight:800}
-.foot{display:flex;align-items:center;justify-content:space-between;padding:30px 56px;border-top:1px solid #e4e4e7}
-.foot .qr{width:120px;height:120px}.foot .info b{display:block;font-size:18px}.foot .info span{color:#71717a;font-size:14px}
-.brand{font-size:12px;color:#a1a1aa;text-align:right}</style></head>
-<body><div class="card">
-<div class="hero"><div class="tag">Live preview</div><h1>$TITLE</h1><a href="$URL">$URL</a></div>
-<div class="shotwrap">$IMG_TAG</div>
-<div class="foot"><div class="qr">$QR</div>
-<div class="info"><b>Scan to open</b><span>$URL</span></div>
-<div class="brand">prepared with<br><b>nt-deploy</b></div></div>
-</div></body></html>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>$TITLE — handoff</title>
+<style>@page{size:A4;margin:14mm}*{margin:0;box-sizing:border-box;font-family:-apple-system,Segoe UI,Roboto,system-ui,sans-serif}
+body{color:#14181f;max-width:820px;margin:auto}
+.hero{padding:40px 44px;border-radius:18px;background:linear-gradient(135deg,#0b1020,#1a1740);color:#fff;margin-bottom:26px}
+.hero .tag{font-size:12px;letter-spacing:.24em;color:#7fdcff;text-transform:uppercase}
+.hero h1{font-size:40px;margin:10px 0 6px;line-height:1.05}.hero a{color:#c7b9ff;font-size:15px;text-decoration:none}
+.hero .meta{margin-top:14px;font-size:13px;color:#aeb8d6}
+h2{font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:#5b6573;margin:26px 0 12px}
+.shot{width:100%;border:1px solid #e4e4e7;border-radius:12px;box-shadow:0 14px 40px rgba(0,0,0,.12)}
+.ph{height:300px;display:grid;place-items:center;border-radius:12px;background:linear-gradient(135deg,#35e8ff,#8b6cff);color:#04060f;font-size:34px;font-weight:800}
+.split{display:flex;gap:24px;align-items:flex-start}
+.mobcol{flex:0 0 260px}.mob{width:260px;border:1px solid #e4e4e7;border-radius:22px;box-shadow:0 14px 40px rgba(0,0,0,.12)}
+.info{flex:1}.info dl{display:grid;grid-template-columns:120px 1fr;gap:8px 12px;font-size:14px}
+.info dt{color:#5b6573}.info dd{color:#14181f;word-break:break-all}
+.qr{width:120px;height:120px;margin-top:14px}
+.notes{border:1px solid #e4e4e7;border-radius:12px;padding:18px 20px;background:#f6f7f9;font-size:14px;color:#3a4452}
+.brand{margin-top:26px;font-size:12px;color:#a1a1aa;text-align:center}</style></head>
+<body>
+<div class="hero"><div class="tag">Project handoff</div><h1>$TITLE</h1>
+<a href="$URL">$URL</a><div class="meta">Prepared $DATE · live preview below (desktop &amp; mobile)</div></div>
+
+<h2>Desktop</h2>$DESK
+<h2>Mobile &amp; details</h2>
+<div class="split">
+  <div class="mobcol">${MOB:-<div class=ph style=height:420px>$TITLE</div>}</div>
+  <div class="info">
+    <dl>
+      <dt>Live URL</dt><dd><a href="$URL">$URL</a></dd>
+      <dt>Prepared</dt><dd>$DATE</dd>
+      <dt>Status</dt><dd>Preview — pending review</dd>
+      <dt>Scan on phone</dt><dd></dd>
+    </dl>
+    <div class="qr">$QR</div>
+  </div>
+</div>
+
+<h2>Notes for the team</h2>
+<div class="notes">
+  <p><strong>Stack &amp; structure:</strong> [fill: HTML/CSS/JS or Vite/Next, key folders].</p>
+  <p><strong>Design system:</strong> see <code>DESIGN.md</code> in the repo for tokens, type, components.</p>
+  <p><strong>Deploy:</strong> <code>nt-push &lt;dir&gt; &lt;client&gt;</code> (Cloudflare) · also Vercel/AWS.</p>
+  <p><strong>To do before launch:</strong> [replace placeholders, add real copy/images, run <code>nt-test</code>].</p>
+</div>
+<div class="brand">prepared with <strong>TooFast</strong></div>
+</body></html>
 HTML
     ok "Created ${BOLD}$HTML${NC}"
     if [ -n "$CHROME" ]; then
       ABS="file://$(cd "$(dirname "$HTML")"&&pwd)/$(basename "$HTML")"
       "$CHROME" --headless=new --disable-gpu --no-pdf-header-footer --print-to-pdf="$PDF" "$ABS" >/dev/null 2>&1
-      [ -s "$PDF" ] && ok "Created ${BOLD}$PDF${NC} — a single file to send your client ($(human_size "$(wc -c < "$PDF")"))"
-    else warn "Install Chrome/Chromium to export a PDF too. For now: open $HTML and print to PDF."; fi
+      [ -s "$PDF" ] && ok "Created ${BOLD}$PDF${NC} — one file for the client/team ($(human_size "$(wc -c < "$PDF")"))"
+    else warn "Install Chrome/Chromium to export a PDF and screenshots. For now open $HTML and print to PDF."; fi
     have open && open "$HTML" 2>/dev/null
     ;;
 
@@ -1408,7 +1435,7 @@ HTML
     echo "  Snapshots:   $SNAP_ROOT/$PROJECT  (keep last $SNAP_KEEP)"; echo "  Auto-update: ${NT_AUTO_UPDATE:-0}"
     echo -e "  ${DIM}Global: nt-init  ·  per-repo: a .ntdeploy file with NT_PROJECT=name${NC}"
     ;;
-  version|--version|-v) echo "nt-deploy v$VERSION" ;;
+  version|--version|-v) echo "toofast v$VERSION ${DIM}(formerly nt-deploy)${NC}" ;;
   update) self_update ;;
 
   help|--help|-h|"")
